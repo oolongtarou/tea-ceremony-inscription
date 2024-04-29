@@ -2,10 +2,18 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import axios from 'axios';
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const req = () => axios.get('http://localhost:8000')
+  .then(response => {
+    // レスポンスデータを処理するコードをここに記述
+    console.log(response.data)
+  })
+  .catch(error => {
+    console.error('リクエストエラー:', error);
+  });
   return (
     <>
       <div>
@@ -21,6 +29,7 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
+        <button onClick={() => req()}>押してね</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
