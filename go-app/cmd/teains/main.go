@@ -1,53 +1,19 @@
 package main
 
 import (
-    // "github.com/gin-gonic/gin"
-    // "github.com/gin-contrib/cors"
-    // "time"
-    // "net/http"
     "go-app/pkg/db"
+    "go-app/internal/repository"
 
+    "fmt"
 )
 
 func main() {
     conn, _ := db.Connect()
 
-    db.Disconnect(conn)
-//   // ここからCorsの設定
-//     r.Use(cors.New(cors.Config{
-//     // アクセスを許可したいアクセス元
-//         AllowOrigins: []string{
-//             "http://localhost:5173",
-//         },
+    result, err := repository.FindUsers(conn)
 
-//         // アクセスを許可したいHTTPメソッド(以下の例だとPUTやDELETEはアクセスできません)
-//         AllowMethods: []string{
-//             "POST",
-//             "GET",
-//             "OPTIONS",
-//         },
+    fmt.Println(result)
+    fmt.Println(err)
 
-//         // 許可したいHTTPリクエストヘッダ
-//         AllowHeaders: []string{
-//             "Access-Control-Allow-Credentials",
-//             "Access-Control-Allow-Headers",
-//             "Content-Type",
-//             "Content-Length",
-//             "Accept-Encoding",
-//             "Authorization",
-//         },
-
-//         // cookieなどの情報を必要とするかどうか
-//         AllowCredentials: true,
-//         // preflightリクエストの結果をキャッシュする時間
-//         MaxAge: 24 * time.Hour,
-//     }))
-
-//     r.GET("/", func(c *gin.Context) {
-//         c.JSON(http.StatusOK, gin.H{
-//             "message": "hello world",
-//         })
-//     })
-
-//     r.Run(":8000")
+    defer db.Disconnect(conn)
 }
