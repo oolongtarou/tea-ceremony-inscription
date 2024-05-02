@@ -7,6 +7,7 @@ import (
 	"go-app/internal/converter"
 )
 
+// 単語IDをキーにして任意の単語の詳細情報を取得する
 func FindWordInfoDetail(wordId int, db *gorm.DB) (entity.WordInfoDetail, error) { 
 	var wordsInfoTemp entity.WordInfoBriefTemp
 	result := db.Table("words").
@@ -33,6 +34,7 @@ func FindWordInfoDetail(wordId int, db *gorm.DB) (entity.WordInfoDetail, error) 
 	return wordInfoDetail, result.Error
 }
 
+// 単語IDをキーにして単語の語釈を取得する
 func FindWordDescriptions(wordId int, db *gorm.DB) ([]entity.WordDescription, error) {
 	var descriptions []entity.WordDescription
 	result := db.Table("word_descriptions").
@@ -47,6 +49,7 @@ func FindWordDescriptions(wordId int, db *gorm.DB) ([]entity.WordDescription, er
 	return descriptions, result.Error
 }
 
+// 単語情報(簡易版)を複数取得する
 func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month int, db *gorm.DB) ([]entity.WordInfoBrief, error) {
 	var wordsInfoTemp []entity.WordInfoBriefTemp
 	chain := db.Table("words").
@@ -75,7 +78,7 @@ func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month 
 	}
 
 	chain.
-	Order("GROUP_CONCAT(DISTINCT words_months_mappings.target_month) asc").
+	Order("GROUP_CONCAT(DISTINCT words_months_mappings.target_month) asc"). // 月の順番で表示したいためソートする
 	Order("words.word_id asc").
 	Find(&wordsInfoTemp)
 

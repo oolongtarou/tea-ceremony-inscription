@@ -8,6 +8,7 @@ import(
 	"go-app/internal/entity"
 )
 
+// 複数の単語情報(簡易版)の一時データをちゃんとして単語情報(簡易版)に変換する
 func ToWordInfoBriefArray(source []entity.WordInfoBriefTemp) []entity.WordInfoBrief {
 	results := make([]entity.WordInfoBrief, len(source))
 
@@ -18,6 +19,7 @@ func ToWordInfoBriefArray(source []entity.WordInfoBriefTemp) []entity.WordInfoBr
 	return results
 }
 
+// 任意の単語情報(簡易版)の一時データをちゃんとして単語情報(簡易版)に変換する
 func ToWordInfoBrief(source entity.WordInfoBriefTemp) entity.WordInfoBrief {
 	converted := entity.WordInfoBrief {
 		WordId:source.WordId,
@@ -29,7 +31,6 @@ func ToWordInfoBrief(source entity.WordInfoBriefTemp) entity.WordInfoBrief {
 
 	return converted
 }
-
 
 func ToIntArray(strArray []string) []int{
 	intSlice := make([]int, len(strArray))
