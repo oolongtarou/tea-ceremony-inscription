@@ -36,6 +36,8 @@ func ListenAndServe(port string) {
 
 	r.GET("/words-info", GetWordInfoBriefs(conn))
 	r.GET("/word-detail", GetWordDetail(conn))
+	r.GET("/word-tags", GetAllWordTags(conn))
+	r.GET("/month-word-count", GetAllMonthWordCount(conn))
 
 	r.Run(port)
 }
@@ -100,6 +102,40 @@ func GetWordDetail(db *gorm.DB) func(c *gin.Context) {
 		wordId := converter.ToIntOrDefault(c.Query("word-id"))
 
 		data, err := repository.FindWordInfoDetail(wordId, db)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "NG",
+				"data": err.Error(),
+			})
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"data": data,
+			})
+		}
+	}
+}
+
+func GetAllWordTags(db *gorm.DB)  func(c *gin.Context) {
+	return func(c *gin.Context) {
+		data, err := repository.FindAllTags(db)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "NG",
+				"data": err.Error(),
+			})
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"data": data,
+			})
+		}
+	}
+}
+
+func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
+	return func(c *gin.Context) {
+		data, err := repository.FindAllMonthWordCount(db)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status":  "NG",
