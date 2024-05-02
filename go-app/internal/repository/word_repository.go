@@ -5,12 +5,13 @@ import (
 	// "errors"
 
 	"go-app/internal/entity"
+	"go-app/internal/converter"
 )
 
 
 
-func FindWordInfo(title string, pronunciation string, tagId int, month int, db *gorm.DB) ([]entity.WordInfoBriefTemp, error) {
-	var wordsInfo []entity.WordInfoBriefTemp
+func FindWordInfo(title string, pronunciation string, tagId int, month int, db *gorm.DB) ([]entity.WordInfoBrief, error) {
+	var wordsInfoTemp []entity.WordInfoBriefTemp
 	chain := db.Table("words").
 	Select("words.word_id, words.title, words.pronunciation, GROUP_CONCAT(DISTINCT word_descriptions.description) AS descriptions, GROUP_CONCAT(DISTINCT words_months_mappings.target_month) AS months, GROUP_CONCAT(DISTINCT word_tags.tag_name) AS tags, GROUP_CONCAT(DISTINCT word_tags.tag_id) AS tag_id_list").
 	Joins("LEFT JOIN word_descriptions ON word_descriptions.word_id = words.word_id").
@@ -39,9 +40,10 @@ func FindWordInfo(title string, pronunciation string, tagId int, month int, db *
 	chain.
 	Order("GROUP_CONCAT(DISTINCT words_months_mappings.target_month) asc").
 	Order("words.word_id asc").
-	Find(&wordsInfo)
+	Find(&wordsInfoTemp)
 
 	result := chain
+	wordsInfo := converter.ToWordInfoBriefArray(wordsInfoTemp)
 	return wordsInfo, result.Error
 }
 
