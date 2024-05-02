@@ -15,8 +15,11 @@ type WordInfoDetail struct {
 }
 
 type WordDescription struct {
-	description string
-	source string
+	WordId int `json:"word_id"`
+	DescriptionId int `json:"description_id"`
+	Description string `json:"description"`
+	SourceId int `json:"source_id"`
+	SourceName string `json:"source_name"`
 }
 
 // 任意の単語の概要情報を表す構造体
