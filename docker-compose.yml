@@ -11,6 +11,9 @@ services:
     tty: true
     ports:
       - 8000:8000
+    networks:
+      - app-net
+    env_file: ./.env.local
   react:
     build:
       context: ./react-app/build
@@ -22,16 +25,22 @@ services:
     # command: sh -c "cd /app/react && yarn install && yarn start"
     ports:
       - 5173:5173
+    networks:
+      - app-net
   db:
     image: mysql:8.0
     volumes:
       - db-store:/var/lib/mysql
     container_name: tea_db
-    environment:
-      - MYSQL_DATABASE=tea_ceremony_inscription
-      - MYSQL_ROOT_PASSWORD="mysql"
     ports:
       - 3306:3306
+    networks:
+      - app-net
+    env_file: ./.env.local
 
 volumes:
   db-store:
+
+networks:
+  app-net:
+    driver: bridge
