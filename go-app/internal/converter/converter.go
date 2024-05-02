@@ -46,3 +46,21 @@ func ToIntArray(strArray []string) []int{
 	}
 	return intSlice
 }
+
+// 文字列をintに変換して返す。変換できなければintの初期値(0)を返す
+func ToIntOrDefault(val string) int {
+	converted, err := strconv.Atoi(val)
+	if err != nil {
+		return 0
+	}
+	return converted
+}
+
+// 文字列をintに変換して返す。変換できなければ指定した値を返す
+func ToIntOr(val string, retVal int) int {
+	converted, err := strconv.Atoi(val)
+	if err != nil {
+		return retVal
+	}
+	return converted
+}

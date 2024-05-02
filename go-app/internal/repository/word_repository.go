@@ -50,7 +50,7 @@ func FindWordDescriptions(wordId int, db *gorm.DB) ([]entity.WordDescription, er
 }
 
 // 単語情報(簡易版)を複数取得する
-func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month int, db *gorm.DB) ([]entity.WordInfoBrief, error) {
+func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month int, offset int, limit int, db *gorm.DB) ([]entity.WordInfoBrief, error) {
 	var wordsInfoTemp []entity.WordInfoBriefTemp
 	chain := db.Table("words").
 	Select("words.word_id, words.title, words.pronunciation, GROUP_CONCAT(DISTINCT word_descriptions.description) AS descriptions, GROUP_CONCAT(DISTINCT words_months_mappings.target_month) AS months, GROUP_CONCAT(DISTINCT word_tags.tag_name) AS tags, GROUP_CONCAT(DISTINCT word_tags.tag_id) AS tag_id_list").
@@ -80,6 +80,8 @@ func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month 
 	chain.
 	Order("GROUP_CONCAT(DISTINCT words_months_mappings.target_month) asc"). // 月の順番で表示したいためソートする
 	Order("words.word_id asc").
+	Limit(limit).
+	Offset(offset).
 	Find(&wordsInfoTemp)
 
 	result := chain
