@@ -23,8 +23,10 @@ const MonthChip: React.FC<Month> = (props) => {
         <Chip 
             className={seasonClassMapping[props.season]} 
             label={props.title} 
+            size='small'
             sx={{
-                backgroundColor:seasonColors[props.season]
+                backgroundColor:seasonColors[props.season],
+                color:'white',
             }}
         />
     );
