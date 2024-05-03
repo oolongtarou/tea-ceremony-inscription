@@ -1,9 +1,10 @@
 import './App.css';
 import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+
 import NavBar from './NavBar'
 import WordCard from './domains/WordCard/WordCard'
-
-import List from '@mui/material/List';
+import TabBar from './domains/TabBar/TagBar';
 
 function App(){
   return (
@@ -13,8 +14,8 @@ function App(){
           <Divider sx={{height:'10px'}}/>
         </nav>
         <div className='l-reverse__body'>
-          <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>
-            <h2>localNav</h2>
+          <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>        
+            <TabBar/>
             <List
               sx={{
                 overflow:'auto',
