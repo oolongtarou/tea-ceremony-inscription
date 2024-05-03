@@ -1,10 +1,12 @@
 import './App.css';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
+import TextField from '@mui/material/TextField';
 
 import NavBar from './NavBar'
 import WordCard from './domains/WordCard/WordCard'
 import TabBar from './domains/TabBar/TagBar';
+import WordContent from './domains/WordContent/WordContent';
 
 function App(){
   return (
@@ -16,6 +18,7 @@ function App(){
         <div className='l-reverse__body'>
           <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>       
             <TabBar/>
+            <TextField fullWidth label='検索' variant='filled' style={{ marginTop:'10px', marginBottom:'10px'}}/>
             <List
               sx={{
                 overflow:'auto',
@@ -35,7 +38,7 @@ function App(){
             </List>
           </nav>
           <div className='c-box l-reverse__content'>
-            content
+            <WordContent/>
           </div>
         </div>
       </div>
