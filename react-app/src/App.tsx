@@ -14,7 +14,7 @@ function App(){
           <Divider sx={{height:'10px'}}/>
         </nav>
         <div className='l-reverse__body'>
-          <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>        
+          <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>       
             <TabBar/>
             <List
               sx={{
@@ -34,7 +34,6 @@ function App(){
               <WordCard/>
             </List>
           </nav>
-          <Divider orientation='vertical'/>
           <div className='c-box l-reverse__content'>
             content
           </div>
