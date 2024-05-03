@@ -15,7 +15,7 @@ export default function WordCard() {
       <div style={{width:'85%', marginLeft:'10px'}}>
               <WordTitle mainFontSize='27.5px' subFontSize='100%' />
               <Description />
-              <WordTags />
+              <WordTags inputFontSize='15px' inputImgSize={20} />
       </div>  
     </div>
   );

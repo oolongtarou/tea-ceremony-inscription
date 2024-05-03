@@ -18,7 +18,7 @@ function WordContent() {
             <WordTitle mainFontSize='50px' subFontSize='27.5px' />
             <MonthChips/>
             <div style={{marginTop:'30px'}}/>
-            <WordTags />
+            <WordTags inputFontSize='20px' inputImgSize={25} />
             <Divider />
             {descriptions.map(description => (
                 <WordDescription {...description} />
