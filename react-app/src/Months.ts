@@ -78,3 +78,19 @@ export class Month {
 }
 
 export const addAllWordCounts = (months: Month[]): number => months.reduce((total, month) => total + month.wordCount, 0);
+
+export const months:Month[] = [
+    new Month(1, 0),
+    new Month(2, 0),
+    new Month(3, 0),
+    new Month(4, 0),
+    new Month(5, 0),
+    new Month(6, 0),
+    new Month(7, 0),
+    new Month(8, 0),
+    new Month(9, 0),
+    new Month(10, 0),
+    new Month(11, 0),
+    new Month(12, 0),
+    new Month(0, 0),
+]

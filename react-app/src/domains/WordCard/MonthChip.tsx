@@ -1,5 +1,5 @@
 import Chip from '@mui/material/Chip';
-import { months, Month } from '../../Months';
+import { Month } from '../../Months';
 import React from 'react';
 import './MonthChip.css'
 
@@ -18,7 +18,12 @@ const seasonColors: { [key: string]: string} = {
     "autumn": '#A74033',
 }
 
-const MonthChip: React.FC<Month> = (props) => {
+interface MonthProps {
+    title: string;
+    season: string;
+}
+
+const MonthChip: React.FC<MonthProps> = (props) => {
     return (
         <Chip 
             className={seasonClassMapping[props.season]} 

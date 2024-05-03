@@ -2,13 +2,32 @@ import './App.css';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
 
 import NavBar from './NavBar'
 import WordCard from './domains/WordCard/WordCard'
 import TabBar from './domains/TabBar/TagBar';
 import WordContent from './domains/WordContent/WordContent';
+import React from 'react';
+import { WordCardEntity } from './domains/WordCard/WordCardEntity';
+import { ToWordCards } from './domains/Converter/Converter';
 
 function App(){
+  const [wordCards, setWordCards] = React.useState<WordCardEntity[]>([]);
+  React.useEffect(() => {
+    const endpoint = `${import.meta.env.VITE_DOMAIN}/words-info`;
+    console.log(`endpoint:${endpoint}`)
+    axios.get(endpoint).then((response) => {
+      try{
+        const converted = ToWordCards(response.data.data);
+        console.log(converted);
+        setWordCards(converted);
+      } catch(error){
+        console.error(`error:${error}`)
+      }
+    })    
+  }, []);
+
   return (
       <div className='l-reverse'>
         <nav className='l-reverse__nav'>
@@ -25,16 +44,11 @@ function App(){
                 height: 715 // TODO：高さをヘッダー抜きで画面サイズいっぱいにしたい。
               }}
             >
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
-              <WordCard/>
+              {/* {wordCards.map((wordCard) => )} */}
+              {/* <WordCard/> */}
+              {wordCards.map((wordCard, index) => (
+                <WordCard key={index} {...wordCard} />
+              ))}
             </List>
           </nav>
           {/* TODO: ↓ここのDivider(縦線はもっとうまい実装方法があるはず) */}

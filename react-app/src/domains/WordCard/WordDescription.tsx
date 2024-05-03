@@ -1,14 +1,19 @@
+import React from "react"
 
+interface DescriptionProps {
+    description: string
+}
 
-
-export default function Description() {
+const Description: React.FC<DescriptionProps> = props => {
     return(
         <>
             <div 
-                style={{width:'275px', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', color:'#939393', fontSize:'15px'}}
+                style={{width:'275px', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', color:'#939393', fontSize:'15px', textAlign:'left'}}
                 >
-                    屋外で照明用に燃やす火。照明としてもっとも原初的なものは庭火（焚(た)き火）であり、それから進んで、椀(わん)または籠(かご)状（多くは鉄製）のものに薪(たきぎ)（多くは松）を入れて燃やすようになったのが篝火である。夜中の警護・照明または漁猟の際に用いられ、古代以来広く行われたが、現代では薪能(たきぎのう)や鵜飼(うかい)に用いられるのが印象に残りやすい。『源氏物語』第27帖(じょう)を「篝火」と題しているのは、ほのかな篝火の火影に見える女性の姿を情趣深くとらえるところからきたものである。
+                    {props.description}
             </div>
         </>
     )
 }
+
+export default  Description
