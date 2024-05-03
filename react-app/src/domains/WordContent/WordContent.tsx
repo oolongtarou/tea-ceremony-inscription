@@ -20,8 +20,8 @@ function WordContent() {
             <div style={{marginTop:'30px'}}/>
             <WordTags inputFontSize='20px' inputImgSize={25} />
             <Divider />
-            {descriptions.map(description => (
-                <WordDescription {...description} />
+            {descriptions.map((description , index) => (
+                <WordDescription key={index} {...description} />
             ))}
         </Container>
     )

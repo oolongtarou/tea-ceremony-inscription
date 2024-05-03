@@ -2,26 +2,30 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import axios from 'axios';
 
 import './TabBar.css'
-import { Tag } from '../../Tags';
+import { WordTag } from '../../WordTags';
+import { ToWordTags } from '../Converter/Converter';
 
 export default function TabBar() {
-  const [value, setValue] = React.useState(1);
+  const[wordTags, setWordTags] = React.useState<WordTag[]>([])
+  const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const tags: Tag[] = [
-    {tagId:1, tagName:"天候"},
-    {tagId:2, tagName:"自然"},
-    {tagId:3, tagName:"動物"},
-    {tagId:4, tagName:"伝統"},
-    {tagId:5, tagName:"和歌"},
-    {tagId:6, tagName:"物語"},
-    {tagId:7, tagName:"禅語"},
-    {tagId:8, tagName:"二十四節気"},
-  ]
+  React.useEffect(() => {
+    const endpoint = `${import.meta.env.VITE_DOMAIN}/word-tags`;
+    console.log(`endpoint:${endpoint}`)
+    axios.get(endpoint).then((response) => {
+      try{
+        setWordTags(ToWordTags(response.data.data));
+      } catch(error){
+        console.error(`error:${error}`)
+      }
+    })    
+  }, []);
 
   return (
     <Box sx={{ maxWidth: { xs: 320, sm: 480 }, color:'#36540f'}}>
@@ -39,7 +43,8 @@ export default function TabBar() {
             }
         }}
       >
-        {tags.map(tag => (
+        <Tab key={0} value={0} label='すべて'/>
+        {wordTags.map(tag => (
           <Tab key={tag.tagId} value={tag.tagId} label={tag.tagName} />
         ))}
       </Tabs>
