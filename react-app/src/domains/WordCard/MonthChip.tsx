@@ -1,24 +1,33 @@
-import * as React from 'react';
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import { months, Month } from '../../Months';
+import React from 'react';
 import './MonthChip.css'
 
-export default function MonthChip() {
-  return (
-    <Stack direction="column" spacing={1}>
-      <Chip className='no-season-color' label="無季" />
-      <Chip className='winter-color' label="1月" />
-      <Chip className='winter-color' label="2月" />
-      <Chip className='spring-color' label="3月" />
-      <Chip className='spring-color' label="4月" />
-      <Chip className='spring-color' label="5月" />
-      <Chip className='summer-color' label="6月" />
-      <Chip className='summer-color' label="7月" />
-      <Chip className='summer-color' label="8月" />
-      <Chip className='autumn-color' label="9月" />
-      <Chip className='autumn-color' label="10月" />
-      <Chip className='autumn-color' label="11月" />
-      <Chip className='winter-color' label="12月" />
-    </Stack>
-  );
+const seasonClassMapping:{[season: string]: string} = {
+  "winter":"winter-color",
+  "spring":"spring-color",
+  "summer":"summer-color",
+  "autumn":"autumn-color",
+  "no":"no-season-color"
 }
+const seasonColors: { [key: string]: string} = {
+    "no": '#939393',
+    "winter": '#00B5EA',
+    "spring": '#EE7D7F',
+    "summer": '#4DB339',
+    "autumn": '#A74033',
+}
+
+const MonthChip: React.FC<Month> = (props) => {
+    return (
+        <Chip 
+            className={seasonClassMapping[props.season]} 
+            label={props.title} 
+            sx={{
+                backgroundColor:seasonColors[props.season]
+            }}
+        />
+    );
+}
+
+export default MonthChip;
