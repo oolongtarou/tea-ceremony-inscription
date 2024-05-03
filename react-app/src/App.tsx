@@ -37,6 +37,8 @@ function App(){
               <WordCard/>
             </List>
           </nav>
+          {/* TODO: ↓ここのDivider(縦線はもっとうまい実装方法があるはず) */}
+          <Divider orientation='vertical' sx={{height:'100vh', marginTop:'-10px'}}/>
           <div className='c-box l-reverse__content'>
             <WordContent/>
           </div>
