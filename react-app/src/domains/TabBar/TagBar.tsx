@@ -24,13 +24,20 @@ export default function TabBar() {
   ]
 
   return (
-    <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper'}}>
+    <Box sx={{ maxWidth: { xs: 320, sm: 480 }, color:'#36540f'}}>
       <Tabs
         value={value}
         onChange={handleChange}
         variant="scrollable"
         scrollButtons={false}
         aria-label="scrollable auto tabs example"
+        textColor='inherit'
+        TabIndicatorProps={{
+            style: {
+                backgroundColor: '#36540f',
+                height: '2px'
+            }
+        }}
       >
         {tags.map(tag => (
           <Tab key={tag.tagId} value={tag.tagId} label={tag.tagName} />
