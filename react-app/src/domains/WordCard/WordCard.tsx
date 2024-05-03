@@ -5,6 +5,7 @@ import WordTitle from './WordTitle';
 import './WordCard.css'
 
 
+
 export default function WordCard() {
   return (
     <div style={{display:'flex', flexWrap:'nowrap', maxHeight:'300px'}} className='word-card'>
