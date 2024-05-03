@@ -1,31 +1,24 @@
 package main
 
 import (
-    "go-app/pkg/db"
-    "go-app/internal/repository"
-    "go-app/internal/entity"
-    "fmt"
+    // "go-app/pkg/db"
+    // "go-app/internal/repository"
+    // "go-app/internal/entity"
+    // "fmt"
+    "go-app/internal/infra/api"
 )
 
 func main() {
-    conn, _ := db.Connect()
+    api.ListenAndServe(":8000")
 
-    // result, err := repository.FindWorInfoBriefs(1, conn)
-    // result, err := repository.FindWorInfoBriefs(nil, conn)
+    // conn, _ := db.Connect()
+    // // result, err := repository.FindWorInfoBriefs(1, conn)
+    // // result, err := repository.FindWorInfoBriefs(nil, conn)
 
-    user := entity.User {
-        UserId:10,
-        UserName:"佐藤",
-        MailAddress:"gmail@gmail.com",
-        Password:"パスワード"}
+    // // result, err := repository.FindWordInfo(title:"", pronunciation:"", tagId:0, month:0, conn)
 
-    err := repository.CreateUser(user, conn)
-    // result, err := repository.FindWordInfo(title:"", pronunciation:"", tagId:0, month:0, conn)
-
-    // fmt.Println(result)
-    // fmt.Println(result)
-    // fmt.Println(len(result))
-    fmt.Println(err)
-
-    defer db.Disconnect(conn)
+    // // fmt.Println(result)
+    // // fmt.Println(result)
+    // // fmt.Println(len(result))
+    // defer db.Disconnect(conn)
 }
