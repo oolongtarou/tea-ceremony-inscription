@@ -1,6 +1,5 @@
 import './App.css';
 import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
 import axios from 'axios';
 
 import InfiniteScroll from 'react-infinite-scroller';
@@ -49,7 +48,6 @@ function App(){
           const count = data.length;
           console.log(`GET ${URL}  count=${count}`)
           setWordCards([...wordCards, ...data]);
-          // setWordCards(data);
           setHasMore(count > 0)
         } catch(error) {
           console.log(error)
@@ -81,13 +79,7 @@ function App(){
           <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>
             <TagBar action={updateWordCards} selectedTagRef={selectedTagRef} />
             <SearchBox searchWordRef={searchWordRef} action={updateWordCards} />
-            <div
-              style={{overflow:'auto', height:715}}
-              // sx={{
-              //   overflow:'auto',
-              //   height: 715 // TODO：高さをヘッダー抜きで画面サイズいっぱいにしたい。
-              // }}
-            >
+            <div style={{overflow:'auto', height:715}}>
               <InfiniteScroll
                 pageStart={1}
                 loadMore={loadUser}
@@ -99,9 +91,6 @@ function App(){
                   <WordCard key={index} wordCard={wordCard} selectWordAction={handleSelectWord} />
                 ))}
               </InfiniteScroll>
-              {/* {wordCards.map((wordCard, index) => (
-                <WordCard key={index} wordCard={wordCard} selectWordAction={handleSelectWord} />
-              ))} */}
             </div>
           </nav>
           {/* TODO: ↓ここのDivider(縦線はもっとうまい実装方法があるはず) */}
