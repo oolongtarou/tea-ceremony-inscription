@@ -1,6 +1,7 @@
 import { Month } from "../../Months";
 import { WordTag } from "../../WordTags";
 import { WordCardEntity } from "../WordCard/WordCardEntity";
+import { WordDescriptionEntity, WordInfoDetail } from "../WordContent/WordInfoDetail";
 
 
 export function ToWordTags(obj: any): WordTag[] {
@@ -36,6 +37,26 @@ export function ToWordCards(obj: any): WordCardEntity[] {
 
     for (let item of obj){
         result.push(new WordCardEntity(item.word_id, item.title, item.pronunciation, item.description, ToMonths(item.months), item.tags));
+    }
+    return result;
+}
+
+export function toWordDetail(obj: any): WordInfoDetail {
+    return new WordInfoDetail(
+        obj.word_id,
+        obj.title,
+        obj.pronunciation,
+        toDescriptions(obj.descriptions),
+        ToMonths(obj.months),
+        obj.tags
+    )
+}
+
+function toDescriptions(obj: any): WordDescriptionEntity[] {
+    const result: WordDescriptionEntity[] = [];
+
+    for (let item of obj) {
+        result.push(new WordDescriptionEntity(item.word_id, item.description_id, item.description, item.source_id, item.source_name))
     }
     return result;
 }

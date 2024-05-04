@@ -20,7 +20,6 @@ function App(){
     axios.get(endpoint).then((response) => {
       try{
         const converted = ToWordCards(response.data.data);
-        console.log(converted);
         setWordCards(converted);
       } catch(error){
         console.error(`error:${error}`)
@@ -44,8 +43,6 @@ function App(){
                 height: 715 // TODO：高さをヘッダー抜きで画面サイズいっぱいにしたい。
               }}
             >
-              {/* {wordCards.map((wordCard) => )} */}
-              {/* <WordCard/> */}
               {wordCards.map((wordCard, index) => (
                 <WordCard key={index} {...wordCard} />
               ))}
