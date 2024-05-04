@@ -48,7 +48,8 @@ function App(){
           const data = ToWordCards(response.data.data);
           const count = data.length;
           console.log(`GET ${URL}  count=${count}`)
-          setWordCards(data);
+          setWordCards([...wordCards, ...data]);
+          // setWordCards(data);
           setHasMore(count > 0)
         } catch(error) {
           console.log(error)
@@ -80,11 +81,12 @@ function App(){
           <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>
             <TagBar action={updateWordCards} selectedTagRef={selectedTagRef} />
             <SearchBox searchWordRef={searchWordRef} action={updateWordCards} />
-            <List
-              sx={{
-                overflow:'auto',
-                height: 715 // TODO：高さをヘッダー抜きで画面サイズいっぱいにしたい。
-              }}
+            <div
+              style={{overflow:'auto', height:715}}
+              // sx={{
+              //   overflow:'auto',
+              //   height: 715 // TODO：高さをヘッダー抜きで画面サイズいっぱいにしたい。
+              // }}
             >
               <InfiniteScroll
                 pageStart={1}
@@ -100,7 +102,7 @@ function App(){
               {/* {wordCards.map((wordCard, index) => (
                 <WordCard key={index} wordCard={wordCard} selectWordAction={handleSelectWord} />
               ))} */}
-            </List>
+            </div>
           </nav>
           {/* TODO: ↓ここのDivider(縦線はもっとうまい実装方法があるはず) */}
           <Divider orientation='vertical' sx={{height:'100vh', marginTop:'-10px'}}/>
