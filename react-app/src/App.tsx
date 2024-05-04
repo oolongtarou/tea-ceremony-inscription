@@ -13,6 +13,8 @@ import WordContent from './domains/WordContent/WordContent';
 import React, { useRef } from 'react';
 import { WordCardEntity } from './domains/WordCard/WordCardEntity';
 import { ToWordCards } from './domains/Converter/Converter';
+import SearchBox from './domains/SearchBox';
+// import SearchBox from './domains/SearchBox';
 
 
 
@@ -21,14 +23,20 @@ function App(){
   // TODo:初期値の代入がマジックナンバーなので直す。
   const selectedMonthRef = useRef<number>(-1);
   const selectedTagRef = useRef<number>(0);
+  // const [searchWord, setSearchWord] = React.useState<string>("");
+  const searchWordRef = useRef<string>("");
   const [wordCards, setWordCards] = React.useState<WordCardEntity[]>([]);
 
   const updateWordCards = () => {
 
+    // const titleQueryParam:string = searchWord != "" ? `title=${searchWord}` : "";
+    // const pronunciationQueryParam:string = searchWord != "" ? `pronunciation=${searchWord}` : "";
+    const titleQueryParam:string = searchWordRef.current != "" ? `title=${searchWordRef.current}` : "";
+    const pronunciationQueryParam:string = searchWordRef.current != "" ? `pronunciation=${searchWordRef.current}` : "";
     const monthQueryParam:string = selectedMonthRef.current >= 0 ? `month=${selectedMonthRef.current}` : "";
-    const tagQueryParam:string = selectedTagRef.current > 0 ? `tag-id=${selectedTagRef.current}` : "";
+    const tagQueryParam:string = selectedTagRef.current > 0 ? `tag-id=${selectedTagRef.current}` : "";    
+    const allQueryParams:string[] = [titleQueryParam, pronunciationQueryParam, monthQueryParam, tagQueryParam];
 
-    const allQueryParams:string[] = [monthQueryParam, tagQueryParam];
     const inputQueryParam:string[] = allQueryParams.filter(x => x != "")
 
     const endpoint = inputQueryParam.length > 0 
@@ -57,7 +65,7 @@ function App(){
         <div className='l-reverse__body'>
           <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>       
             <TagBar action={updateWordCards} selectedTagRef={selectedTagRef} />
-            <TextField fullWidth label='検索' variant='filled' style={{ marginTop:'10px', marginBottom:'10px'}}/>
+            <SearchBox searchWordRef={searchWordRef} action={updateWordCards} />
             <List
               sx={{
                 overflow:'auto',
