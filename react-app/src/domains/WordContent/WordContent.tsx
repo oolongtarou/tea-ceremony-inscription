@@ -27,15 +27,7 @@ function WordContent() {
         console.log(`endpoint:${endpoint}`)
         axios.get(endpoint).then((response) => {
           try{
-            console.log(response.data.data)
-            const testDescription = response.data.data.descriptions[0].description;
-            // console.log(`タブ：${testDescription.includes("\t")}`)
-            // console.log(`改行¥n：${testDescription.includes("\n")}`)
-            // console.log(`改行¥r：${testDescription.includes("\r")}`)
-            // console.log(`改行¥r¥n：${testDescription.includes("\r\n")}`)
-
             const converted = toWordDetail(response.data.data)
-            console.log(converted)
             setWordDetail(converted)
           } catch(error){
             console.error(`error:${error}`)
@@ -49,7 +41,7 @@ function WordContent() {
             <MonthChips {...wordDetail}/>
             <div style={{marginTop:'30px'}}/>
             <WordTags tag={tag} inputFontSize='20px' inputImgSize={25} />
-            <Divider style={{marginBottom:'50px'}} />
+            <Divider style={{marginBottom:'30px'}} />
             {wordDetail.descriptions.map((description , index) => (
                 <WordDescription key={index} {...description} />
             ))}
