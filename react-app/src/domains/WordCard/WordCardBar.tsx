@@ -48,7 +48,7 @@ const WordCardBar: React.FC<WordCardBarProps> = props => {
     return(
         <div style={{overflow:'auto', height:715}}>
         <InfiniteScroll
-          pageStart={-1}
+          pageStart={0}
           loadMore={loadUser}
           // loader={<div>loadingなう</div>}
           hasMore={hasMore}
