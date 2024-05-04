@@ -2,40 +2,61 @@ import './App.css';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
+import Paper from '@mui/material/Paper';
 
 import NavBar from './NavBar'
 import WordCard from './domains/WordCard/WordCard'
-import TabBar from './domains/TabBar/TagBar';
+import TagBar from './domains/TabBar/TagBar';
 import WordContent from './domains/WordContent/WordContent';
-import React from 'react';
+import React, { useRef } from 'react';
 import { WordCardEntity } from './domains/WordCard/WordCardEntity';
 import { ToWordCards } from './domains/Converter/Converter';
 
+
+
 function App(){
+  
+  // TODo:初期値の代入がマジックナンバーなので直す。
+  const selectedMonthRef = useRef<number>(-1);
+  const selectedTagRef = useRef<number>(0);
   const [wordCards, setWordCards] = React.useState<WordCardEntity[]>([]);
-  React.useEffect(() => {
-    const endpoint = `${import.meta.env.VITE_DOMAIN}/words-info`;
+
+  const updateWordCards = () => {
+
+    const monthQueryParam:string = selectedMonthRef.current >= 0 ? `month=${selectedMonthRef.current}` : "";
+    const tagQueryParam:string = selectedTagRef.current > 0 ? `tag-id=${selectedTagRef.current}` : "";
+
+    const allQueryParams:string[] = [monthQueryParam, tagQueryParam];
+    const inputQueryParam:string[] = allQueryParams.filter(x => x != "")
+
+    const endpoint = inputQueryParam.length > 0 
+      ? `${import.meta.env.VITE_DOMAIN}/words-info?${inputQueryParam.join("&")}`
+      : `${import.meta.env.VITE_DOMAIN}/words-info`;
+
     console.log(`endpoint:${endpoint}`)
-    axios.get(endpoint).then((response) => {
-      try{
-        const converted = ToWordCards(response.data.data);
-        setWordCards(converted);
-      } catch(error){
-        console.error(`error:${error}`)
-      }
-    })    
-  }, []);
+      axios.get(endpoint).then((response) => {
+        try{
+          console.log(response.data.data)
+          const converted = ToWordCards(response.data.data);
+          setWordCards(converted);
+        } catch(error){
+          console.error(`error:${error}`)
+        }
+      })
+  }
+  React.useEffect(() => updateWordCards, []);
 
   return (
       <div className='l-reverse'>
         <nav className='l-reverse__nav'>
-          <NavBar/>
+          <NavBar action={updateWordCards} selectedMonthRef={selectedMonthRef} />
           <Divider sx={{height:'10px'}}/>
         </nav>
         <div className='l-reverse__body'>
           <nav className='l-reverse__localNav' style={{paddingLeft:'20px', paddingRight:'20px'}}>       
-            <TabBar/>
+            <TagBar action={updateWordCards} selectedTagRef={selectedTagRef} />
             <TextField fullWidth label='検索' variant='filled' style={{ marginTop:'10px', marginBottom:'10px'}}/>
             <List
               sx={{

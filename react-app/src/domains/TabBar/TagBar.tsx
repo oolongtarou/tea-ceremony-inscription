@@ -8,11 +8,18 @@ import './TabBar.css'
 import { WordTag } from '../../WordTags';
 import { ToWordTags } from '../Converter/Converter';
 
-export default function TabBar() {
+interface TagBarProps {
+  action: () => void
+  selectedTagRef: React.MutableRefObject<number>
+}
+
+const TagBar: React.FC<TagBarProps> = props => {
   const[wordTags, setWordTags] = React.useState<WordTag[]>([])
   const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    props.selectedTagRef.current = newValue;
+    props.action();
   };
 
   React.useEffect(() => {
@@ -51,3 +58,5 @@ export default function TabBar() {
     </Box>
   );
 }
+
+export default TagBar

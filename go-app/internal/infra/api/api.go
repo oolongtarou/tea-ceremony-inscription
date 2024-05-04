@@ -80,7 +80,7 @@ func GetWordInfoBriefs(db *gorm.DB) func(c *gin.Context) {
 		tagId := converter.ToIntOrDefault(c.Query("tag-id"))
 		month := converter.ToIntOrDefault(c.Query("month"))
 		offset := converter.ToIntOr(c.Query("offset"), 1)
-		limit := offset * constant.WORD_LIMIT_PER_REQUEST
+		limit := offset + constant.WORD_LIMIT_PER_REQUEST
 
 		data, err := repository.FindWorInfoBriefArray(title, pronunciation, tagId, month, offset, limit , db)
 		if err != nil {

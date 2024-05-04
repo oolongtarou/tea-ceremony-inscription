@@ -7,10 +7,17 @@ import './App.css'
 import axios from "axios";
 import { ToMonthWordCounts } from './domains/Converter/Converter';
 
-export default function NavBar() {
+interface NavBarProps {
+  action: () => void
+  selectedMonthRef: React.MutableRefObject<number>
+}
+
+const NavBar: React.FC<NavBarProps> = props => {
     const [value, setValue] = React.useState(-1);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
+        props.selectedMonthRef.current = newValue;
+        props.action()
     }
     const [monthWordCounts, setMonthWordCounts] = React.useState<Month[]>([]);
       React.useEffect(() => {
@@ -51,3 +58,5 @@ export default function NavBar() {
         </Box>
         );
 };
+
+export default NavBar 
