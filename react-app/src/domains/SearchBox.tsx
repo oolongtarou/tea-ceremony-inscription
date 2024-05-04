@@ -3,7 +3,7 @@ import { IconButton, InputBase, Paper } from '@mui/material';
 import React from 'react';
 
 interface SearchBoxProps {
-    action: () => void
+    action: (searchText: string) => void
     searchWordRef: React.MutableRefObject<string>
 }
 
@@ -16,7 +16,7 @@ const SearchBox: React.FC<SearchBoxProps> = props => {
         if (event.key === 'Enter') {
           event.preventDefault(); // デフォルトの Enter キーの挙動を防ぐ
           console.log('Enter key pressed!');
-          props.action();
+          props.action(props.searchWordRef.current);
         }
       };
 
@@ -33,7 +33,7 @@ const SearchBox: React.FC<SearchBoxProps> = props => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       />
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={props.action}>
+      <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={() => props.action(props.searchWordRef.current)}>
         <SearchIcon />
       </IconButton>
     </Paper>

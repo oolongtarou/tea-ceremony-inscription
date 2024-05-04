@@ -8,13 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 	// "go-app/cmd"
 	// "go-app/internal"
-	// "fmt"
+	"fmt"
+	"reflect"
 
 	"go-app/pkg/db"
     "go-app/internal/repository"
 	// "go-app/internal/entity"
 	"gorm.io/gorm"
-    "fmt"
+
 	"go-app/internal/converter"
 	"go-app/internal/constant"
 )
@@ -75,13 +76,18 @@ func GetCorsConf() cors.Config {
 
 func GetWordInfoBriefs(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
+		fmt.Println(c.Query("title"), reflect.TypeOf(c.Query("title")))
+		fmt.Println(c.Query("pronunciation"), reflect.TypeOf(c.Query("pronunciation")))
+		fmt.Println(c.Query("tag-id"), reflect.TypeOf(c.Query("tag-id")))
+		fmt.Println(c.Query("month"), reflect.TypeOf(c.Query("month")))
+		fmt.Println(c.Query("offset"), reflect.TypeOf(c.Query("offset")))
 		title := c.Query("title")
 		pronunciation := c.Query("pronunciation")
 		tagId := converter.ToIntOrDefault(c.Query("tag-id"))
 		month := converter.ToIntOrDefault(c.Query("month"))
 		offset := converter.ToIntOr(c.Query("offset"), 0)
 		limit := constant.WORD_LIMIT_PER_REQUEST
-
+		fmt.Println(offset)
 		data, err := repository.FindWorInfoBriefArray(title, pronunciation, tagId, month, offset, limit , db)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
