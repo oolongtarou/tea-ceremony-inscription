@@ -19,7 +19,7 @@ interface WordContentProps {
 const WordContent: React.FC<WordContentProps> = props => {
     const [wordDetail, setWordDetail] = React.useState<WordInfoDetail>(new WordInfoDetail(0,"","",[],[],[]));
       React.useEffect(() => {
-        console.log(`props.WordIdRef.current：${props.selectedWordId}`)
+        // console.log(`props.WordIdRef.current：${props.selectedWordId}`)
         if(props.selectedWordId == 0){
           return;
         }

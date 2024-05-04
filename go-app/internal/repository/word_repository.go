@@ -59,13 +59,13 @@ func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month 
 	Joins("LEFT JOIN word_tags ON word_tags.tag_id = words_tags_mappings.tag_id").
 	Joins("LEFT JOIN words_months_mappings ON  words_months_mappings.word_id = words.word_id")
 
-	if title != "" {
-		chain.Where("words.title LIKE ?", "%" + title + "%")
+	if title != "" || pronunciation != ""  {
+		chain.Where("words.title LIKE ?", "%" + title + "%").Or("words.pronunciation LIKE ?", "%" + pronunciation + "%")
 	}
 
-	if pronunciation != "" {
-		chain.Where("words.pronunciation LIKE ?", "%" + pronunciation + "%")
-	}
+	// if pronunciation != "" {
+	// 	chain.Where("words.pronunciation LIKE ?", "%" + pronunciation + "%").Or("words.title LIKE ?", "%" + title + "%")
+	// }
 
 	chain.Group("words.word_id")
 
@@ -78,6 +78,7 @@ func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month 
 	}
 
 	chain.
+	Order("MIN(words_months_mappings.target_month) asc"). // 月の順番で表示したいためソートする
 	Order("GROUP_CONCAT(DISTINCT words_months_mappings.target_month) asc"). // 月の順番で表示したいためソートする
 	Order("words.word_id asc").
 	Limit(limit).

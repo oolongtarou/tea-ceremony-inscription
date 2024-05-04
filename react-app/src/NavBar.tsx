@@ -8,7 +8,7 @@ import axios from "axios";
 import { ToMonthWordCounts } from './domains/Converter/Converter';
 
 interface NavBarProps {
-  action: () => void
+  action: (month: number) => void
   selectedMonthRef: React.MutableRefObject<number>
 }
 
@@ -17,12 +17,11 @@ const NavBar: React.FC<NavBarProps> = props => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
         props.selectedMonthRef.current = newValue;
-        props.action()
+        props.action(newValue)
     }
     const [monthWordCounts, setMonthWordCounts] = React.useState<Month[]>([]);
       React.useEffect(() => {
         const endpoint = `${import.meta.env.VITE_DOMAIN}/month-word-count`;
-        console.log(`endpoint:${endpoint}`)
         axios.get(endpoint).then((response) => {
           try{
             const converted:Month[] = ToMonthWordCounts(response.data.data);

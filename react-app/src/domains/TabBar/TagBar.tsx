@@ -9,7 +9,7 @@ import { WordTag } from '../../WordTags';
 import { ToWordTags } from '../Converter/Converter';
 
 interface TagBarProps {
-  action: () => void
+  action: (tag: number) => void
   selectedTagRef: React.MutableRefObject<number>
 }
 
@@ -19,12 +19,12 @@ const TagBar: React.FC<TagBarProps> = props => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
     props.selectedTagRef.current = newValue;
-    props.action();
+    props.action(newValue);
   };
 
   React.useEffect(() => {
     const endpoint = `${import.meta.env.VITE_DOMAIN}/word-tags`;
-    console.log(`endpoint:${endpoint}`)
+    // console.log(`endpoint:${endpoint}`)
     axios.get(endpoint).then((response) => {
       try{
         setWordTags(ToWordTags(response.data.data));
