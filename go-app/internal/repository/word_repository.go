@@ -78,6 +78,7 @@ func FindWorInfoBriefArray(title string, pronunciation string, tagId int, month 
 	}
 
 	chain.
+	Order("MIN(words_months_mappings.target_month) asc"). // 月の順番で表示したいためソートする
 	Order("GROUP_CONCAT(DISTINCT words_months_mappings.target_month) asc"). // 月の順番で表示したいためソートする
 	Order("words.word_id asc").
 	Limit(limit).
