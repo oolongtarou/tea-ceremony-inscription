@@ -18,13 +18,6 @@ const sleep = (sec: number) => new Promise(resolve =>
   setTimeout(resolve, sec * 1000));
 
 function App(){
-
-  // ↓無限スクロール
-
-
-  // ↑無限スクロール
-
-
   // TODo:初期値の代入がマジックナンバーなので直す。
   const selectedMonthRef = useRef<number>(-1);
   const selectedTagRef = useRef<number>(0);
