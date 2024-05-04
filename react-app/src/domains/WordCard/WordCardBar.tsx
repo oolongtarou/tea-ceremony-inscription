@@ -3,8 +3,7 @@ import WordCard from './WordCard';
 import axios from 'axios';
 import { WordCardEntity } from './WordCardEntity';
 import { ToWordCards } from '../Converter/Converter';
-import React, { useImperativeHandle } from 'react';
-import { Key } from '@mui/icons-material';
+import React from 'react';
 
 interface WordCardBarProps {
     action: (id: number) => void;
@@ -22,8 +21,9 @@ const sleep = (sec: number) => new Promise(resolve =>
     setTimeout(resolve, sec * 1000));
 
 const WordCardBar: React.FC<WordCardBarProps> = props => {
-    const [hasMore, setHasMore] = React.useState(true) 
-    const loadUser = async (page: number) => {  
+    const [hasMore, setHasMore] = React.useState(true)
+    const loadUser = async (page: number) => {
+      console.log(`page:${page}`)
       const inputEndpoint = props.endpoint;
       const offset = inputEndpoint.includes("?") ? `&offset=${page * 20}` : `?offset=${page * 20}`
       const URL:string = inputEndpoint +  offset;

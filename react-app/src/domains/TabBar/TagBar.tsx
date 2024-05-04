@@ -17,11 +17,9 @@ const TagBar: React.FC<TagBarProps> = props => {
   const[wordTags, setWordTags] = React.useState<WordTag[]>([])
   const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log("タグヲクリックしました。")
     setValue(newValue);
     props.selectedTagRef.current = newValue;
     props.action(newValue);
-    console.log(`タグヲクリックしたのでアクションを実行しました。${newValue}`)
   };
 
   React.useEffect(() => {

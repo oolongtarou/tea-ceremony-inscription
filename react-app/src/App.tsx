@@ -2,12 +2,10 @@ import './App.css';
 import Divider from '@mui/material/Divider';
 import axios from 'axios';
 
-import { Routes, Route } from "react-router-dom"; // 追加
-
 import NavBar from './NavBar'
 import TagBar from './domains/TabBar/TagBar';
 import WordContent from './domains/WordContent/WordContent';
-import React, { SetStateAction, useRef } from 'react';
+import React, { useRef } from 'react';
 import { WordCardEntity } from './domains/WordCard/WordCardEntity';
 import { ToWordCards } from './domains/Converter/Converter';
 import SearchBox from './domains/SearchBox';
@@ -39,14 +37,27 @@ function App(){
     ? `${import.meta.env.VITE_DOMAIN}/words-info?${inputQueryParam.join("&")}`
     : `${import.meta.env.VITE_DOMAIN}/words-info`;
 
-  const updateWordCardsOnMonth = (month: number) => {
+  React.useEffect(() => {
+    inputQueryParam = getQueryParams(selectedMonthRef, selectedTagRef, searchWordRef)
+      endpoint = getEndpoint(inputQueryParam);
+      axios.get(endpoint).then((response) => {
+        try{
+          setAnother(!another)
+          const converted = ToWordCards(response.data.data);
+          setWordCards(converted);
+        } catch(error){
+          console.error(`error:${error}`)
+        }
+      })
+  }, [])
+
+  const updateWordCardsOnMonth = (month: number) => { 
       selectedMonthRef.current = month;
       inputQueryParam = getQueryParams(selectedMonthRef, selectedTagRef, searchWordRef)
       endpoint = getEndpoint(inputQueryParam);
       axios.get(endpoint).then((response) => {
         try{
           setAnother(!another)
-          // console.log(response.data.data)
           const converted = ToWordCards(response.data.data);
           setWordCards(converted);
         } catch(error){
@@ -55,7 +66,6 @@ function App(){
       })
   }
   const updateWordCardsOnTag = (tag: number) => {
-    console.log(`updateWordCardsOnTagを実行します：タグ：${tag}`)
     selectedTagRef.current = tag;
     inputQueryParam = getQueryParams(selectedMonthRef, selectedTagRef, searchWordRef)
     endpoint = getEndpoint(inputQueryParam);
@@ -63,7 +73,6 @@ function App(){
       axios.get(endpoint).then((response) => {
         try{
           setAnother(!another)
-          // console.log(response.data.data)
           const converted = ToWordCards(response.data.data);
           setWordCards(converted);
         } catch(error){
