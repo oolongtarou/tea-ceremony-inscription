@@ -12,8 +12,8 @@ func Connect() (*gorm.DB, error) {
 	user := os.Getenv("MYSQL_USER")
 	pw := "mysql"
 	// pw := os.Getenv("MYSQL_PASSWORD")
-	// db_name := os.Getenv("MYSQL_DATABASE")
-	db_name := "tea_ins"
+	db_name := os.Getenv("MYSQL_DATABASE")
+	// db_name := "tea_ins"
 	conn_name := os.Getenv("MYSQL_CONN_NAME")
 	var path string = fmt.Sprintf("%s:%s@unix(/cloudsql/%s)/%s", user, pw, conn_name, db_name)
 	// var path string = fmt.Sprintf("%s:%s@unix(%s)/%s?parseTime=true", user, pw, conn_name, db_name)
