@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-    api.ListenAndServe(":8000")
+    api.ListenAndServe(":8080")
 
     // conn, _ := db.Connect()
     // // result, err := repository.FindWorInfoBriefs(1, conn)
