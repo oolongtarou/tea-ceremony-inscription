@@ -161,22 +161,22 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
 
 func Test()  func(c *gin.Context) {
     return func(c *gin.Context) {
-		conn, err := db.Connect()
-		result := "成功です。"
+		_, err := db.Connect()
 		if err != nil {
-			// TODO:ログを出す。
-			fmt.Println(err.Error())
-			result = err.Error()
-			// return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"data": "テストです。",
+				"result": "エラーです。",
+			})     
 		} else {
-			defer db.Disconnect(conn)
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"data": "テストです。",
+				"result": "成功です。",
+			})     
 		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"status":  "OK",
-			"data": "テストです。",
-			"result": result,
-		})     
+	
     }
 }
 
