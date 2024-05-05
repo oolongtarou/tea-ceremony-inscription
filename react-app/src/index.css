@@ -1,3 +1,12 @@
 html,body {
   overflow: hidden;
 }
+
+body {
+  margin: 0;
+}
+
+h1{
+  font-size: 5em;
+  font-family: 'acgyosyo' ,Arial, Helvetica, sans-serif;
+}
