@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"reflect"
 
-	// "go-app/pkg/db"
+	"go-app/pkg/db"
     "go-app/internal/repository"
 	// "go-app/internal/entity"
 	"gorm.io/gorm"
@@ -161,9 +161,21 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
 
 func Test()  func(c *gin.Context) {
     return func(c *gin.Context) {
+		conn, err := db.Connect()
+		result := "成功です。"
+		if err != nil {
+			// TODO:ログを出す。
+			fmt.Println(err.Error())
+			result = err.Error()
+			// return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
+		} else {
+			defer db.Disconnect(conn)
+		}
+
 		c.JSON(http.StatusOK, gin.H{
 			"status":  "OK",
 			"data": "テストです。",
+			"result": result,
 		})     
     }
 }
