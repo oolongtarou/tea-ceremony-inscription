@@ -10,7 +10,8 @@ import (
 
 func Connect() (*gorm.DB, error) {
 	user := os.Getenv("MYSQL_USER")
-	pw := os.Getenv("MYSQL_PASSWORD")
+	pw := "mysql"
+	// pw := os.Getenv("MYSQL_PASSWORD")
 	// db_name := os.Getenv("MYSQL_DATABASE")
 	db_name := "tea_ins"
 	conn_name := os.Getenv("MYSQL_CONN_NAME")
