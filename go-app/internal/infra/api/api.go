@@ -19,6 +19,12 @@ import (
 	"go-app/internal/converter"
 	"go-app/internal/constant"
 	"os"
+
+	"cloud.google.com/go/cloudsqlconn"
+	"context"
+	"github.com/go-sql-driver/mysql"
+	// "database/sql"
+	"net"
 )
 
 // ユーザーからのリクエストを待機してリクエストに応じてレスポンスする
@@ -161,12 +167,27 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
 }
 
 func Test()  func(c *gin.Context) {
-    return func(c *gin.Context) {
-				user := os.Getenv("MYSQL_USER")
+	user := os.Getenv("MYSQL_USER")
 	pw := os.Getenv("MYSQL_PASSWORD")
 	db_name := os.Getenv("MYSQL_DATABASE")
 	conn_name := os.Getenv("MYSQL_CONN_NAME")
-	var path string = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, pw, conn_name, db_name)
+
+	d, err := cloudsqlconn.NewDialer(context.Background())
+
+    if err != nil {
+        fmt.Errorf("cloudsqlconn.NewDialer: %w", err)
+    }
+    var opts []cloudsqlconn.DialOption
+
+    mysql.RegisterDialContext("cloudsqlconn",
+        func(ctx context.Context, addr string) (net.Conn, error) {
+            return d.Dial(ctx, conn_name, opts...)
+        })
+
+	var path string = fmt.Sprintf("%s:%s@cloudsqlconn(localhost:3306)/%s?charset=utf8&parseTime=true", user, pw, conn_name, db_name)
+
+    return func(c *gin.Context) {
+
 		_, err := db.Connect()
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
