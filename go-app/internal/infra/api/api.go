@@ -18,7 +18,7 @@ import (
 
 	"go-app/internal/converter"
 	"go-app/internal/constant"
-	"os"
+	// "os"
 )
 
 // ユーザーからのリクエストを待機してリクエストに応じてレスポンスする
@@ -161,13 +161,6 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
 }
 
 func Test()  func(c *gin.Context) {
-	user := os.Getenv("MYSQL_USER")
-	pw := os.Getenv("MYSQL_PASSWORD")
-	// db_name := os.Getenv("MYSQL_DATABASE")
-	db_name := "tea_ins"
-	conn_name := os.Getenv("MYSQL_CONN_NAME")
-	var path string = fmt.Sprintf("%s:%s@unix(%s)/%s?parseTime=true", user, pw, conn_name, db_name)
-
     return func(c *gin.Context) {
 
 		_, err := db.Connect()
@@ -176,7 +169,7 @@ func Test()  func(c *gin.Context) {
 				"status":  "OK",
 				"data": "テストです。",
 				"result": "エラーです。",
-				"connection_string": path,
+				// "connection_string": path,
 				"msg": err.Error(),
 			})     
 		} else {
@@ -184,8 +177,9 @@ func Test()  func(c *gin.Context) {
 				"status":  "OK",
 				"data": "テストです。",
 				"result": "成功です。",
-				"connection_string": path,
+				// "connection_string": path,
 			})     
+
 		}
 	// 	user := os.Getenv("MYSQL_USER")
 	// pw := os.Getenv("MYSQL_PASSWORD")
