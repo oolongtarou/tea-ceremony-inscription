@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"go-app/pkg/db"
+	// "go-app/pkg/db"
     "go-app/internal/repository"
 	// "go-app/internal/entity"
 	"gorm.io/gorm"
@@ -27,18 +27,20 @@ func ListenAndServe(port string) {
 	// Corsの設定をする
 	r.Use(cors.New(GetCorsConf()))
 
-	conn, err := db.Connect()
-	if err != nil {
-		// TODO:ログを出す。
-		fmt.Println(err.Error())
-		return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
-	}
-	defer db.Disconnect(conn)
+	r.GET("/", Test())
 
-	r.GET("/words-info", GetWordInfoBriefs(conn))
-	r.GET("/word-detail", GetWordDetail(conn))
-	r.GET("/word-tags", GetAllWordTags(conn))
-    r.GET("/month-word-count", GetAllMonthWordCount(conn))
+	// conn, err := db.Connect()
+	// if err != nil {
+	// 	// TODO:ログを出す。
+	// 	fmt.Println(err.Error())
+	// 	return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
+	// }
+	// defer db.Disconnect(conn)
+
+	// r.GET("/words-info", GetWordInfoBriefs(conn))
+	// r.GET("/word-detail", GetWordDetail(conn))
+	// r.GET("/word-tags", GetAllWordTags(conn))
+    // r.GET("/month-word-count", GetAllMonthWordCount(conn))
 
 	r.Run(port)
 }
@@ -48,7 +50,8 @@ func GetCorsConf() cors.Config {
 	return cors.Config{
 		// アクセスを許可したいアクセス元
 		AllowOrigins: []string{
-			"http://localhost:5173",
+			"*",
+			// "http://localhost:5173",
 		},
 
 		// アクセスを許可したいHTTPメソッド(以下の例だとPUTやDELETEはアクセスできません)
@@ -155,3 +158,14 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
         }
     }
 }
+
+func Test()  func(c *gin.Context) {
+    return func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  "OK",
+			"data": "テストです。",
+		})     
+    }
+}
+
+
