@@ -11,13 +11,14 @@ import (
 	"fmt"
 	"reflect"
 
-	"go-app/pkg/db"
+	// "go-app/pkg/db"
     "go-app/internal/repository"
 	// "go-app/internal/entity"
 	"gorm.io/gorm"
 
 	"go-app/internal/converter"
 	"go-app/internal/constant"
+	"os"
 )
 
 // ユーザーからのリクエストを待機してリクエストに応じてレスポンスする
@@ -161,21 +162,30 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
 
 func Test()  func(c *gin.Context) {
     return func(c *gin.Context) {
-		_, err := db.Connect()
-		if err != nil {
+		// _, err := db.Connect()
+		// if err != nil {
+		// 	c.JSON(http.StatusOK, gin.H{
+		// 		"status":  "OK",
+		// 		"data": "テストです。",
+		// 		"result": "エラーです。",
+		// 	})     
+		// } else {
+		// 	c.JSON(http.StatusOK, gin.H{
+		// 		"status":  "OK",
+		// 		"data": "テストです。",
+		// 		"result": "成功です。",
+		// 	})     
+		// }
+		user := os.Getenv("MYSQL_USER")
+	pw := os.Getenv("MYSQL_PASSWORD")
+	db_name := os.Getenv("MYSQL_DATABASE")
+	conn_name := os.Getenv("MYSQL_CONN_NAME")
+	var path string = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, pw, conn_name, db_name)
 			c.JSON(http.StatusOK, gin.H{
 				"status":  "OK",
 				"data": "テストです。",
-				"result": "エラーです。",
-			})     
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"status":  "OK",
-				"data": "テストです。",
-				"result": "成功です。",
-			})     
-		}
-
+				"result": path,
+			})    
 	
     }
 }
