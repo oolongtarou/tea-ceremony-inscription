@@ -28,20 +28,20 @@ func ListenAndServe(port string) {
 	// Corsの設定をする
 	r.Use(cors.New(GetCorsConf()))
 
-	r.GET("/", Test())
+	// r.GET("/", Test())
 
-	// conn, err := db.Connect()
-	// if err != nil {
-	// 	// TODO:ログを出す。
-	// 	fmt.Println(err.Error())
-	// 	return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
-	// }
-	// defer db.Disconnect(conn)
+	conn, err := db.Connect()
+	if err != nil {
+		// TODO:ログを出す。
+		fmt.Println(err.Error())
+		return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
+	}
+	defer db.Disconnect(conn)
 
-	// r.GET("/words-info", GetWordInfoBriefs(conn))
-	// r.GET("/word-detail", GetWordDetail(conn))
-	// r.GET("/word-tags", GetAllWordTags(conn))
-    // r.GET("/month-word-count", GetAllMonthWordCount(conn))
+	r.GET("/words-info", GetWordInfoBriefs(conn))
+	r.GET("/word-detail", GetWordDetail(conn))
+	r.GET("/word-tags", GetAllWordTags(conn))
+    r.GET("/month-word-count", GetAllMonthWordCount(conn))
 
 	r.Run(port)
 }
