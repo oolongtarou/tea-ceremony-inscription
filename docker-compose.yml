@@ -1,13 +1,13 @@
 services:
   go:
     build:
-      context: ./go-app/build
+      context: ./go-app
       dockerfile: Dockerfile
     container_name: tea_go
     depends_on:
       - db
-    volumes:
-      - ./go-app/:/go/src/app
+    # volumes:
+    #   - ./go-app/:/go/src/app
     tty: true
     ports:
       - 8000:8000
@@ -16,12 +16,13 @@ services:
     env_file: ./.env.local
   react:
     build:
-      context: ./react-app/build
+      context: ./react-app
+      # context: ./react-app/build
       dockerfile: Dockerfile
     container_name: tea_react
     tty: true
-    volumes:
-      - ./react-app/:/app/react
+    # volumes:
+    #   - ./react-app/:/app/react
     # command: sh -c "cd /app/react && yarn install && yarn start"
     ports:
       - 5173:5173
