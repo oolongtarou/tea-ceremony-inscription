@@ -1,33 +1,4 @@
 services:
-  go:
-    build:
-      context: ./go-app
-      dockerfile: Dockerfile
-    container_name: tea_go
-    depends_on:
-      - db
-    # volumes:
-    #   - ./go-app/:/go/src/app
-    tty: true
-    ports:
-      - 8000:8000
-    networks:
-      - app-net
-    env_file: ./.env.local
-  react:
-    build:
-      context: ./react-app
-      # context: ./react-app/build
-      dockerfile: Dockerfile
-    container_name: tea_react
-    tty: true
-    # volumes:
-    #   - ./react-app/:/app/react
-    # command: sh -c "cd /app/react && yarn install && yarn start"
-    ports:
-      - 5173:5173
-    networks:
-      - app-net
   db:
     image: mysql:8.0
     volumes:
@@ -38,6 +9,34 @@ services:
     networks:
       - app-net
     env_file: ./.env.local
+  go:
+    build:
+      context: ./go-app
+      dockerfile: Dockerfile
+    container_name: tea_go
+    depends_on:
+      - db
+    volumes:
+      - ./go-app/:/go/src/app
+    tty: true
+    ports:
+      - 8080:8080
+    networks:
+      - app-net
+    env_file: ./.env.local
+  react:
+    build:
+      context: ./react-app
+      dockerfile: Dockerfile
+    container_name: tea_react
+    tty: true
+    volumes:
+      - ./react-app/:/app/react
+    # command: sh -c "cd /app/react && yarn install && yarn start"
+    ports:
+      - 5173:5173
+    networks:
+      - app-net
 
 volumes:
   db-store:

@@ -11,14 +11,17 @@ import (
 func Connect() (*gorm.DB, error) {
 	user := os.Getenv("MYSQL_USER")
 	pw := os.Getenv("MYSQL_PASSWORD")
-	db_name := os.Getenv("MYSQL_DATABASE")
+	// db_name := os.Getenv("MYSQL_DATABASE")
+	db_name := "tea_ins"
 	conn_name := os.Getenv("MYSQL_CONN_NAME")
-	var path string = fmt.Sprintf("%s:%s@unix(/%s)/%s?charset=utf8&parseTime=true", user, pw, conn_name, db_name)
+	var path string = fmt.Sprintf("%s:%s@unix(%s)/%s?parseTime=true"
+	, user, pw, conn_name, db_name)
 	// var path string = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, pw, conn_name, db_name)
 
 	db, err := gorm.Open(mysql.Open(path), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Db open error:", err.Error())
+		return db, err
 	}
 
 	fmt.Println("Db connected!")
