@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"reflect"
 
-	// "go-app/pkg/db"
+	"go-app/pkg/db"
     "go-app/internal/repository"
 	// "go-app/internal/entity"
 	"gorm.io/gorm"
@@ -169,33 +169,33 @@ func Test()  func(c *gin.Context) {
 
     return func(c *gin.Context) {
 
-		// _, err := db.Connect()
-		// if err != nil {
-		// 	c.JSON(http.StatusOK, gin.H{
-		// 		"status":  "OK",
-		// 		"data": "テストです。",
-		// 		"result": "エラーです。",
-		// 		"connection_string": path,
-		// 		"msg": err.Error(),
-		// 	})     
-		// } else {
-		// 	c.JSON(http.StatusOK, gin.H{
-		// 		"status":  "OK",
-		// 		"data": "テストです。",
-		// 		"result": "成功です。",
-		// 		"connection_string": path,
-		// 	})     
-		// }
+		_, err := db.Connect()
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"data": "テストです。",
+				"result": "エラーです。",
+				"connection_string": path,
+				"msg": err.Error(),
+			})     
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"status":  "OK",
+				"data": "テストです。",
+				"result": "成功です。",
+				"connection_string": path,
+			})     
+		}
 	// 	user := os.Getenv("MYSQL_USER")
 	// pw := os.Getenv("MYSQL_PASSWORD")
 	// db_name := os.Getenv("MYSQL_DATABASE")
 	// conn_name := os.Getenv("MYSQL_CONN_NAME")
 	// var path string = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, pw, conn_name, db_name)
-			c.JSON(http.StatusOK, gin.H{
-				"status":  "OK",
-				"data": "テストです。",
-				"result": path,
-			})    
+			// c.JSON(http.StatusOK, gin.H{
+			// 	"status":  "OK",
+			// 	"data": "テストです。",
+			// 	"result": path,
+			// })    
 	
     }
 }
