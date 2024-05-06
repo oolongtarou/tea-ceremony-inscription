@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './utils/index.css'
+import '../utils/index.css'
 import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import App from './routes/App.tsx';
-import Login from './routes/Login.tsx';
+import App from './App.tsx';
+import Login from './Login.tsx';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
