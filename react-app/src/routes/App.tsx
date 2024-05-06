@@ -1,15 +1,16 @@
-import './App.css';
+import '../utils/App.css'
 import Divider from '@mui/material/Divider';
 import axios from 'axios';
 
-import NavBar from './NavBar'
-import TagBar from './domains/TabBar/TagBar';
-import WordContent from './domains/WordContent/WordContent';
 import React, { useRef } from 'react';
-import { WordCardEntity } from './domains/WordCard/WordCardEntity';
-import { ToWordCards } from './domains/Converter/Converter';
-import SearchBox from './domains/SearchBox';
-import WordCardBar from './domains/WordCard/WordCardBar';
+
+import MonthBar from '../components/MonthBar/MonthBar';
+import TagBar from '../components/TagBar/TagBar';
+import WordContent from '../components/WordContent/WordContent';
+import { WordCardEntity } from '../components/WordCard/WordCardEntity';
+import { ToWordCards } from '../utils/Converter';
+import SearchBox from '../components/SearchBox/SearchBox';
+import WordCardBar from '../components/WordCard/WordCardBar';
 
 
 
@@ -99,7 +100,7 @@ function App(){
   return (
       <div className='l-reverse'>
         <nav className='l-reverse__nav'>
-          <NavBar action={updateWordCardsOnMonth} selectedMonthRef={selectedMonthRef} />
+          <MonthBar action={updateWordCardsOnMonth} selectedMonthRef={selectedMonthRef} />
           <Divider sx={{height:'10px'}}/>
         </nav>
         <div className='l-reverse__body'>

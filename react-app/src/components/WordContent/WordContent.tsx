@@ -8,7 +8,7 @@ import WordDescription from './WordDescription';
 import MonthChips from './MonthChips';
 import React from 'react';
 import axios from 'axios';
-import { toWordDetail } from '../Converter/Converter';
+import { toWordDetail } from '../../utils/Converter';
 
 
 interface WordContentProps {

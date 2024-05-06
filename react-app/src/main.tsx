@@ -1,10 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import './utils/index.css'
 import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Newtop from './New.tsx'
-import Top from './Top.tsx'
+import App from './routes/App.tsx';
+import Login from './routes/Login.tsx';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -34,7 +33,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <Top />
+      <Login />
     ),
   },
   {
@@ -48,8 +47,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-    {/* <BrowserRouter>
-      <App />
-    </BrowserRouter> */}
   </React.StrictMode>
 )

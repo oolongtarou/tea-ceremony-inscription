@@ -1,4 +1,4 @@
-import { Month } from "../../Months";
+import { Month } from "../../domains/Months";
 
 export class WordInfoDetail {
     wordId: number;

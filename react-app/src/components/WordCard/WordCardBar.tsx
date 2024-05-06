@@ -2,7 +2,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import WordCard from './WordCard';
 import axios from 'axios';
 import { WordCardEntity } from './WordCardEntity';
-import { ToWordCards } from '../Converter/Converter';
+import { ToWordCards } from '../../utils/Converter';
 import React from 'react';
 
 interface WordCardBarProps {

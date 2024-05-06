@@ -4,9 +4,10 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 
-import './TabBar.css'
+import './TagBar.css'
 import { WordTag } from '../../WordTags';
-import { ToWordTags } from '../Converter/Converter';
+
+import { ToWordTags } from '../../utils/Converter';
 
 interface TagBarProps {
   action: (tag: number) => void
