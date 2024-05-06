@@ -1,7 +1,17 @@
 services:
+  db:
+    image: mysql:8.0
+    volumes:
+      - db-store:/var/lib/mysql
+    container_name: tea_db
+    ports:
+      - 3306:3306
+    networks:
+      - app-net
+    env_file: ./.env.local
   go:
     build:
-      context: ./go-app/build
+      context: ./go-app
       dockerfile: Dockerfile
     container_name: tea_go
     depends_on:
@@ -10,10 +20,13 @@ services:
       - ./go-app/:/go/src/app
     tty: true
     ports:
-      - 8000:8000
+      - 8080:8080
+    networks:
+      - app-net
+    env_file: ./.env.local
   react:
     build:
-      context: ./react-app/build
+      context: ./react-app
       dockerfile: Dockerfile
     container_name: tea_react
     tty: true
@@ -22,16 +35,12 @@ services:
     # command: sh -c "cd /app/react && yarn install && yarn start"
     ports:
       - 5173:5173
-  db:
-    image: mysql:8.0
-    volumes:
-      - db-store:/var/lib/mysql
-    container_name: tea_db
-    environment:
-      - MYSQL_DATABASE=tea_ceremony_inscription
-      - MYSQL_ROOT_PASSWORD="mysql"
-    ports:
-      - 3306:3306
+    networks:
+      - app-net
 
 volumes:
   db-store:
+
+networks:
+  app-net:
+    driver: bridge

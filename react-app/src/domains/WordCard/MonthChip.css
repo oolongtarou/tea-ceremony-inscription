@@ -1,0 +1,24 @@
+.spring-color {
+    background-color: #EE7D7F;
+    color: white;
+}
+
+.summer-color {
+    background-color: #4DB339;
+    color: white;
+}
+
+.autumn-color {
+    background-color: #A74033;
+    color: white;
+}
+
+.winter-color {
+    background-color: #00B5EA;
+    color: white;
+}
+
+.no-season-color {
+    background-color: #939393;
+    color: white;
+}
