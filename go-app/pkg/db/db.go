@@ -14,7 +14,7 @@ func Connect() (*gorm.DB, error) {
 	protocol := os.Getenv("MYSQL_PROTOCOL")
 	db_name := os.Getenv("MYSQL_DATABASE")
 	conn_name := os.Getenv("MYSQL_CONN_NAME")
-	var path string = fmt.Sprintf("%s:%s@%s(%s)/%s", user, pw, protocol, conn_name, db_name)
+	var path string = fmt.Sprintf("%s:%s@%s(/cloudsql/%s)/%s", user, pw, protocol, conn_name, db_name)
 
 	db, err := gorm.Open(mysql.Open(path), &gorm.Config{})
 	if err != nil {
