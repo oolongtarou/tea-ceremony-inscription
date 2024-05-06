@@ -8,6 +8,5 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main ./cmd/teains/main.go
-
-CMD ["./main"]
+# RUN go build -o main ./cmd/teains/main.go
+# CMD ["./main"]

@@ -7,9 +7,9 @@ COPY yarn.lock .
 
 COPY . .
 
-RUN yarn install --production
-# RUN yarn
+# RUN yarn install --production
+RUN yarn
 
-ENTRYPOINT [ "yarn", "start" ]
+# ENTRYPOINT [ "yarn", "start" ]
 
 
