@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from "react-router-dom";
 
-function Top() {
+function Login() {
     return (
         <div className="l-full">
             <div className="c-box l-full__content">
@@ -18,4 +18,4 @@ function Top() {
     )
 }
 
-export default Top
+export default Login

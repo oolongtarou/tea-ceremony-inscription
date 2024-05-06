@@ -2,7 +2,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import WordCard from './WordCard';
 import axios from 'axios';
 import { WordCardEntity } from './WordCardEntity';
-import { ToWordCards } from '../Converter/Converter';
+import { ToWordCards } from '../../utils/Converter';
 import React from 'react';
 
 interface WordCardBarProps {
@@ -46,7 +46,8 @@ const WordCardBar: React.FC<WordCardBarProps> = props => {
     // useImperativeHandle()
 
     return(
-        <div style={{overflow:'auto', height:715}}>
+        <div style={{overflow:'auto'}} className='word-card-bar'>
+        {/* <div style={{overflow:'auto', height:715}}> */}
         <InfiniteScroll
           pageStart={0}
           loadMore={loadUser}

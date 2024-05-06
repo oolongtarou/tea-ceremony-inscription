@@ -2,17 +2,18 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { Month, addAllWordCounts } from './Months';
-import './App.css'
+import '../../utils/App.css'
 import axios from "axios";
-import { ToMonthWordCounts } from './domains/Converter/Converter';
 
-interface NavBarProps {
+import { ToMonthWordCounts } from '../../utils/Converter';
+import { Month, addAllWordCounts } from '../../domains/Months';
+
+interface MonthBarProps {
   action: (month: number) => void
   selectedMonthRef: React.MutableRefObject<number>
 }
 
-const NavBar: React.FC<NavBarProps> = props => {
+const MonthBar: React.FC<MonthBarProps> = props => {
     const [value, setValue] = React.useState(-1);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -58,4 +59,4 @@ const NavBar: React.FC<NavBarProps> = props => {
         );
 };
 
-export default NavBar 
+export default MonthBar 

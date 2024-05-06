@@ -1,7 +1,6 @@
 import Chip from '@mui/material/Chip';
-import { Month } from '../../Months';
 import React from 'react';
-import './MonthChip.css'
+import { Month } from '../../domains/Months';
 
 const seasonClassMapping:{[season: string]: string} = {
   "winter":"winter-color",
@@ -28,10 +27,13 @@ const MonthChip: React.FC<MonthProps> = (props) => {
         <Chip 
             className={seasonClassMapping[props.season]} 
             label={props.title} 
-            size='small'
+            size='medium'
             sx={{
                 backgroundColor:seasonColors[props.season],
                 color:'white',
+                paddingLeft:'10px',
+                paddingRight:'10px',
+                fontSize:'1em'
             }}
         />
     );

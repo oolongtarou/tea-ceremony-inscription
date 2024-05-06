@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import { Month } from '../../Months';
+import { Month } from '../../domains/Months';
 import MonthChip from './MonthChip';
 import './MonthChip.css'
 import React from 'react';

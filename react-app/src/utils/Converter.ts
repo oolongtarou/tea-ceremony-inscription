@@ -1,7 +1,7 @@
-import { Month } from "../../Months";
-import { WordTag } from "../../WordTags";
-import { WordCardEntity } from "../WordCard/WordCardEntity";
-import { WordDescriptionEntity, WordInfoDetail } from "../WordContent/WordInfoDetail";
+import { Month } from "../domains/Months";
+import { WordTag } from "../WordTags";
+import { WordCardEntity } from "../components/WordCard/WordCardEntity";
+import { WordDescriptionEntity, WordInfoDetail } from "../components/WordContent/WordInfoDetail";
 
 
 export function ToWordTags(obj: any): WordTag[] {
