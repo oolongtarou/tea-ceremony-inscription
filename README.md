@@ -58,7 +58,7 @@ https://bejewled-jaborosa-3c0.notion.site/94b9ffd9212e4b558c660ddda3815ce2?pvs=4
 ![image](https://github.com/oolongtarou/tea-ceremony-inscription/assets/71446730/7407d936-8acb-49df-8ab2-0334ff9f222c)
 
 ## API設計
-
+[茶の湯の銘図鑑_API.yaml](./docs/茶の湯の銘図鑑_API.yaml)参照。
 
 
 ## DB設計
@@ -106,7 +106,7 @@ erDiagram
 	}
 	WORD_LIKES {
 		int user_id PK
-		int word_id PKｆ
+		int word_id PK
 	}
 ```
 
