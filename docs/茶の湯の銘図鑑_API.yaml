@@ -1,0 +1,378 @@
+openapi: 3.0.3
+info:
+  title: 茶の湯の銘図鑑 API設計書
+  description: |-
+    茶の湯の銘図鑑のAPI設計です。
+  version: 1.0.11
+tags:
+  - name: words-info
+    description: 任意の単語のひとまとまりの情報
+  - name: users
+    description: ユーザー情報
+paths:
+  /words-info:
+    get:
+      tags:
+        - words-info
+      summary: 指定したすべての単語のデータ取得する
+      operationId: getWordsInfo
+      parameters:
+        - name: tagId
+          in: query
+          description: タグIDをもとに単語を取得する
+          required: false
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: month
+          in: query
+          description: 月をもとに単語を取得する
+          required: false
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: like
+          in: query
+          description: お気に入りの単語を取得する
+          required: false
+          explode: true
+          schema:
+            type: boolean
+        - name: offset
+          in: query
+          description: 全単語中何番目のデータから取得するのか
+          required: false
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          description: 全単語中何番目のデータまで取得するのか
+          required: false
+          explode: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WordsInfo'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WordsInfo'
+  /words-info/favorite/add:
+    post:
+      tags:
+        - words-info
+      summary: 任意の単語をお気に入りに登録する
+      operationId: addFavoriteWord
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordLike'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WordLike'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WordLike'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /words-info/favorite/remove:
+    post:
+      tags:
+        - words-info
+      summary: 任意の単語をお気に入りから外す
+      operationId: removeFavoriteWord
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WordLike'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/WordLike'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WordLike'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: 任意のユーザーとしてログインする
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: ログアウトする
+      operationId: logout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /users/guest:
+    get:
+      tags:
+        - users
+      summary: ゲストとしてログインする
+      operationId: guest
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /users/create:
+    post:
+      tags:
+        - users
+      summary: 新しいアカウントを作成する
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /users/delete:
+    post:
+      tags:
+        - users
+      summary: アカウントを削除する
+      operationId: deleteUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /users/password/change:
+    post:
+      tags:
+        - users
+      summary: 任意のユーザーのパスワードを変更する
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /users/password/reset:
+    post:
+      tags:
+        - users
+      summary: 任意のユーザーのパスワードをリセットする
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+components:
+  schemas:
+    WordsInfo:
+      type: object
+      properties:
+        wordId:
+          type: integer
+          format: int64
+          example: 10
+        title:
+          type: string
+          example: 幾千代
+        descriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/WordDescription'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/WordTag'
+        like:
+          type: boolean
+        months:
+          type: array
+          items:
+            type: integer
+            format: int64
+            example: 3
+    WordDescription:
+      type: object
+      properties:
+        descriptionId:
+          type: integer
+          format: int64
+          example: 10
+        description:
+          type: string
+          example: どれくらい多くの年代。また、非常に多くの代。何千代。どれくらい多くの年代。また、非常に多くの代。何千代。
+    WordTag:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int64
+          example: 10
+        tagName:
+          type: string
+          example: 天候
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+          example: 10
+        userName:
+          type: string
+          example: 高橋 豊
+        email:
+          type: string
+          example: example@gmail.com
+        password:
+          type: string
+          example: examplePassword
+    WordLike:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+          example: 10
+        wordId:
+          type: integer
+          format: int64
+          example: 10
+  requestBodies:
+    WordsInfo:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WordsInfo'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/WordsInfo'
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/WordsInfo'

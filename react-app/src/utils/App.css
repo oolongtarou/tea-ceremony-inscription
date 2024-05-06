@@ -4,7 +4,7 @@
 
 .l-full__content {
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   text-align: center;
   color: white;
 }
@@ -15,11 +15,14 @@
 }
 .l-reverse__body {
   display: flex;
+  height: calc(100vh - 100px);
+  /* height: calc(100vh - 20px); */
 }
 .l-reverse__localNav {
   flex: 0.5;
   position: relative;
   text-align: center;
+  height: calc(100vh - 100px);
 }
 .l-reverse__content {
   flex: 3;
@@ -28,4 +31,8 @@
 
 .c-box {
   padding-top: 5vh;
+}
+
+.word-card-bar{
+  height: calc(100vh - 215px)
 }
