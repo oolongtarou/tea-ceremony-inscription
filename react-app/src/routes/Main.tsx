@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client'
 import '../utils/index.css'
 import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
-import Login from './Login.tsx';
-
+import Top from './Top.tsx';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -33,7 +32,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <Login />
+      <Top />
     ),
   },
   {
