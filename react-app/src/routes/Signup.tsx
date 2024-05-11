@@ -12,11 +12,11 @@ interface IFormInput {
   password: string
 }
 
-type LoginProps = {
-  toggleLoginSignup: () => void
+type SignupProps = {
+    toggleLoginSignup: () => void
 }
 
-const Login: React.FC<LoginProps> = (props) => {
+const Signup: React.FC<SignupProps> = (props) => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<IFormInput>()
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -48,21 +48,16 @@ const Login: React.FC<LoginProps> = (props) => {
           <TextField type="password" label="パスワード" variant="filled" fullWidth required {...register("password")} />
           <Box mt={3}>
             <Button type="submit" color="primary" variant="contained" fullWidth>
-              ログイン
+              登録してログイン
             </Button>
-              <Link to="#">パスワードを忘れた方はこちら</Link>
-            <Typography>
-              <Link to='/App'>ログインせずにスタート</Link>
-            </Typography>
-            <Typography variant="caption" display="block">
-              アカウントをお持ちでない場合
-              <button style={{display: "inline"}} onClick={props.toggleLoginSignup}> 登録はこちら</button>
-            </Typography>
           </Box>
+          <Button onClick={props.toggleLoginSignup} color="secondary" variant="contained" fullWidth>
+              ログインに戻る
+            </Button>
       </Card>
     </form>
   );
 };
 
 
-export default Login
+export default Signup
