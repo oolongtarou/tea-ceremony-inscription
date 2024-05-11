@@ -13,11 +13,12 @@ import (
 
 	"go-app/pkg/db"
     "go-app/internal/repository"
-	// "go-app/internal/entity"
+	"go-app/internal/entity"
 	"gorm.io/gorm"
 
 	"go-app/internal/converter"
 	"go-app/internal/constant"
+	"go-app/pkg/security"
 	// "os"
 
 	"github.com/gin-contrib/sessions"
@@ -41,17 +42,59 @@ func ListenAndServe(port string) {
 	}
 	defer db.Disconnect(conn)
 
+	r.POST("/users/create", CreateAccount(conn))
 	r.GET("/words-info", GetWordInfoBriefs(conn))
 	r.GET("/word-detail", GetWordDetail(conn))
 	r.GET("/word-tags", GetAllWordTags(conn))
     r.GET("/month-word-count", GetAllMonthWordCount(conn))
 	r.POST("/login", func(c *gin.Context){
 		session := sessions.Default(c)
-		session.Set("mailAddress", c.PostForm("mailAddress"))
-		session.Set("password", c.PostForm("password"))
+		
+		user, err := repository.FindUserByMailAddress(c.PostForm("mailAddress"), conn)
+		if err != nil {
+			fmt.Println("メールアドレスをキーにしたユーザー情報の取得に失敗しました", err.Error())
+			c.JSON(http.StatusOK, gin.H{
+				"status": "NG",
+				"loginId": 0,
+			})
+			return 
+		}
 
+		if user.UserId <= 0 {
+			fmt.Println("対象のメールアドレスが登録されていません。")
+			c.JSON(http.StatusOK, gin.H{
+				"status": "NG",
+				"loginId": 0,
+			})
+			return 
+		}
+
+		if user.Password != security.ToHashed(c.PostForm("password")) {
+			fmt.Println("パスワードが一致しません。")
+			c.JSON(http.StatusOK, gin.H{
+				"status": "NG",
+				"loginId": 0,
+			})
+			return 
+		}
+
+
+		// mailAddress := c.PostForm("mailAddress")
+		// password := c.PostForm("password")
+		// session.Set("mailAddress", mailAddress)n
+		// session.Set("password", password)
+		session.Set("userId", user.UserId)
         session.Save()
 
+		// user := entity.User{
+		// 	// UserId: nil,
+		// 	UserName: "yusuke-sato",
+		// 	MailAddress: c.PostForm("mailAddress"),
+		// 	Password: security.ToHashed(c.PostForm("password")),
+		// }
+		// err := repository.CreateUser(user, conn)
+
+	
 		c.JSON(http.StatusOK, gin.H{
 			"status": "OK",
 			"loginId": 0,
@@ -183,6 +226,47 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
             c.JSON(http.StatusOK, gin.H{
                 "status":  "OK",
                 "data": data,
+            })
+        }
+    }
+}
+
+func CreateAccount(db *gorm.DB) func(c *gin.Context) {
+    return func(c *gin.Context) {
+
+		user := entity.User{
+			// UserId: nil,
+			UserName: c.PostForm("userName"),
+			MailAddress: c.PostForm("mailAddress"),
+			Password: security.ToHashed(c.PostForm("password")),
+		}
+
+		result, err := repository.FindUserByMailAddress(user.MailAddress, db)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+                "status":  "NG",
+                "data": err.Error(),
+            })
+		}
+
+		if result.UserId <= 0 {
+			c.JSON(http.StatusOK, gin.H{
+                "status":  "NG",
+                "data": "すでに登録されているメールアドレスのため登録できません。",
+            })
+		}
+
+		err = repository.CreateUser(user, db)
+
+        if err != nil {
+            c.JSON(http.StatusOK, gin.H{
+                "status":  "NG",
+                "data": err.Error(),
+            })
+        } else {
+            c.JSON(http.StatusOK, gin.H{
+                "status":  "OK",
+                "data": "",
             })
         }
     }
