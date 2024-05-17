@@ -8,6 +8,8 @@ import { useState } from "react";
 
 interface PasswordFieldProps {
     formRegtiser: UseFormRegisterReturn<string>
+    error: boolean
+    helperText: string
 }
 
 export default function PasswordTextField(props:PasswordFieldProps) {
@@ -22,6 +24,8 @@ export default function PasswordTextField(props:PasswordFieldProps) {
         label="パスワード" 
         variant="filled" 
         fullWidth 
+        error={props.error}
+        helperText={props.helperText}
         InputProps={{
             endAdornment: 
                 <InputAdornment position="end">

@@ -3,6 +3,8 @@ import { UseFormRegisterReturn } from "react-hook-form"
 
 interface MailAddressFieldProps {
     formRegtiser: UseFormRegisterReturn<string>
+    error: boolean
+    helperText: string
 }
 
 export default function MailAddressTextField(props:MailAddressFieldProps) {
@@ -13,6 +15,8 @@ export default function MailAddressTextField(props:MailAddressFieldProps) {
         variant="filled" 
         fullWidth 
         required 
+        error={props.error}
+        helperText={props.helperText}
         {...props.formRegtiser}
         />
     )
