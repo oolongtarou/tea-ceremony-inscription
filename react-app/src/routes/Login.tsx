@@ -69,21 +69,23 @@ const Login: React.FC<LoginProps> = (props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card sx={{ p: 4, width: "400px", m: "20px auto" }}>          
+      <Card sx={{ p: 4, width: "400px", minHeight: "400px", m: "20px auto", }}>          
           <MailAddressTextField error={mailAddressError} helperText={mailAddressHelperText} formRegtiser={register("mailAddress")} />
           <PasswordTextField error={passwordError} helperText={passwordHelperText} formRegtiser={register("password")} />
 
           <Box mt={3}>
-            <Button type="submit" color="primary" variant="contained" fullWidth>
+            <Button type="submit" color="primary" variant="contained" fullWidth sx={{fontSize: "1.1rem", marginBottom: "10px"}}>
               ログイン
             </Button>
-              <Link to="#">パスワードを忘れた方はこちら</Link>
-            <Typography>
+            <Typography display="flex" justifyContent="flex-end">
+              <Link to="#" style={{ textDecoration: "none", fontSize: "0.9rem"}}>パスワードを忘れた方はこちら</Link>
+            </Typography>
+            <Typography style={{ fontSize: "1.6rem", marginTop: "2rem"}}>
               <Link to='/App'>ログインせずにスタート</Link>
             </Typography>
-            <Typography variant="caption" display="block">
+            <Typography display="block" style={{fontSize: "1rem", marginTop: "2rem", color: "#939393"}}>
               アカウントをお持ちでない場合
-              <a style={{display: "inline", cursor: "pointer"}} onClick={props.toggleLoginSignup}>&nbsp;登録はこちら</a>
+              <a style={{display: "inline", cursor: "pointer", fontSize: "1.2rem", textDecoration: "underline"}} onClick={props.toggleLoginSignup}>&nbsp;登録はこちら</a>
             </Typography>
           </Box>
       </Card>
