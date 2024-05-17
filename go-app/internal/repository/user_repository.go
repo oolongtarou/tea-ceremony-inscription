@@ -23,6 +23,14 @@ func FindUserById(userId int, db *gorm.DB) (entity.User, error){
 	return user, result.Error
 }
 
+// メールアドレスをキーにしてユーザー情報を取得する
+func FindUserByMailAddress(mailAddress string, db *gorm.DB) (entity.User, error){
+	var user entity.User
+	result := db.Where("mail_address = ?", mailAddress).Find(&user)
+
+	return user, result.Error
+}
+
 // ユーザー名を更新する
 func UpdateUserName(user entity.User, db *gorm.DB) (int64, error) {
 	if len(user.UserName) <= 0{

@@ -9,39 +9,48 @@ import (
 	// "go-app/cmd"
 	// "go-app/internal"
 	"fmt"
-	"reflect"
+	// "reflect"
 
 	"go-app/pkg/db"
     "go-app/internal/repository"
-	// "go-app/internal/entity"
+	"go-app/internal/entity"
+
 	"gorm.io/gorm"
 
 	"go-app/internal/converter"
 	"go-app/internal/constant"
+	"go-app/pkg/security"
 	// "os"
+
+	"github.com/gin-contrib/sessions"
+    "github.com/gin-contrib/sessions/cookie"
 )
 
 // ユーザーからのリクエストを待機してリクエストに応じてレスポンスする
 func ListenAndServe(port string) {
 	r := gin.Default()
 
+	store := cookie.NewStore([]byte("secret"))
+    r.Use(sessions.Sessions("tea_ins_session", store))
 	// Corsの設定をする
 	r.Use(cors.New(GetCorsConf()))
 
-	// r.GET("/", Test())
-
 	conn, err := db.Connect()
 	if err != nil {
-		// TODO:ログを出す。
 		fmt.Println(err.Error())
 		return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
 	}
 	defer db.Disconnect(conn)
 
+	r.POST("/users/create", CreateAccount(conn))
 	r.GET("/words-info", GetWordInfoBriefs(conn))
 	r.GET("/word-detail", GetWordDetail(conn))
 	r.GET("/word-tags", GetAllWordTags(conn))
     r.GET("/month-word-count", GetAllMonthWordCount(conn))
+	r.POST("/login", Login(conn))
+
+	r.GET("/logout", Logout(conn))
+	// r.POST("/login", Login(conn))
 
 	r.Run(port)
 }
@@ -51,8 +60,8 @@ func GetCorsConf() cors.Config {
 	return cors.Config{
 		// アクセスを許可したいアクセス元
 		AllowOrigins: []string{
-			"*",
-			// "http://localhost:5173",
+			"http://localhost:5173",
+			"https://tea-ins-a7ffe.web.app",
 		},
 
 		// アクセスを許可したいHTTPメソッド(以下の例だとPUTやDELETEはアクセスできません)
@@ -80,11 +89,6 @@ func GetCorsConf() cors.Config {
 
 func GetWordInfoBriefs(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		fmt.Println(c.Query("title"), reflect.TypeOf(c.Query("title")))
-		fmt.Println(c.Query("pronunciation"), reflect.TypeOf(c.Query("pronunciation")))
-		fmt.Println(c.Query("tag-id"), reflect.TypeOf(c.Query("tag-id")))
-		fmt.Println(c.Query("month"), reflect.TypeOf(c.Query("month")))
-		fmt.Println(c.Query("offset"), reflect.TypeOf(c.Query("offset")))
 		title := c.Query("title")
 		pronunciation := c.Query("pronunciation")
 		tagId := converter.ToIntOrDefault(c.Query("tag-id"))
@@ -160,39 +164,104 @@ func GetAllMonthWordCount(db *gorm.DB)  func(c *gin.Context) {
     }
 }
 
-func Test()  func(c *gin.Context) {
+func CreateAccount(db *gorm.DB) func(c *gin.Context) {
     return func(c *gin.Context) {
 
-		_, err := db.Connect()
+		user := entity.User{
+			// UserId: nil,
+			UserName: c.PostForm("userName"),
+			MailAddress: c.PostForm("mailAddress"),
+			Password: security.ToHashed(c.PostForm("password")),
+		}
+
+		result, err := repository.FindUserByMailAddress(user.MailAddress, db)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
-				"status":  "OK",
-				"data": "テストです。",
-				"result": "エラーです。",
-				// "connection_string": path,
-				"msg": err.Error(),
-			})     
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"status":  "OK",
-				"data": "テストです。",
-				"result": "成功です。",
-				// "connection_string": path,
-			})     
-
+                "status":  "NG",
+                "data": err.Error(),
+            })
 		}
-	// 	user := os.Getenv("MYSQL_USER")
-	// pw := os.Getenv("MYSQL_PASSWORD")
-	// db_name := os.Getenv("MYSQL_DATABASE")
-	// conn_name := os.Getenv("MYSQL_CONN_NAME")
-	// var path string = fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, pw, conn_name, db_name)
-			// c.JSON(http.StatusOK, gin.H{
-			// 	"status":  "OK",
-			// 	"data": "テストです。",
-			// 	"result": path,
-			// })    
-	
+
+		if result.UserId <= 0 {
+			c.JSON(http.StatusOK, gin.H{
+                "status":  "NG",
+                "data": "すでに登録されているメールアドレスのため登録できません。",
+            })
+		}
+
+		err = repository.CreateUser(user, db)
+
+        if err != nil {
+            c.JSON(http.StatusOK, gin.H{
+                "status":  "NG",
+                "data": err.Error(),
+            })
+        } else {
+            c.JSON(http.StatusOK, gin.H{
+                "status":  "OK",
+                "data": "",
+            })
+        }
     }
 }
 
+func Login(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context){
+		session := sessions.Default(c)
 
+		mailAddress := c.PostForm("mailAddress")
+		user, err := repository.FindUserByMailAddress(mailAddress, db)
+
+		if err != nil {
+			fmt.Println("メールアドレスをキーにしたユーザー情報の取得に失敗しました", err.Error())
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "メールアドレスが取得できませんでした。", "", 0},
+			})
+			return 
+		}
+
+		if user.UserId <= 0 {
+			fmt.Println("対象のメールアドレスが登録されていません。")
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "対象のメールアドレスが登録されていません。", "", 0},
+			})
+			return 
+		}
+
+		if user.Password != security.ToHashed(c.PostForm("password")) {
+			fmt.Println("パスワードが一致しません。")
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "", "パスワードが一致しません。", 0},
+			})
+			return 
+		}
+
+		session.Set("userId", user.UserId)
+        session.Save()
+	
+		c.JSON(http.StatusOK, gin.H{
+			"status": 200,
+			"data": entity.LoginResult{true, "", "", 0},
+		})
+	}
+}
+
+func Logout(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context){
+		// セッションの破棄
+		session := sessions.Default(c)
+
+		session.Clear()
+		session.Options(sessions.Options{Path: "/", MaxAge: -1})
+		session.Save()
+
+		c.JSON(http.StatusOK, gin.H{
+			"status": 200,
+			"success": "OK",
+			"loginId": 0,
+		})
+	}
+}

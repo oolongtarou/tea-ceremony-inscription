@@ -1,7 +1,6 @@
 import '../utils/App.css'
 import Divider from '@mui/material/Divider';
 import axios from 'axios';
-
 import React, { useRef } from 'react';
 
 import MonthBar from '../components/MonthBar/MonthBar';
@@ -13,6 +12,7 @@ import SearchBox from '../components/SearchBox/SearchBox';
 import WordCardBar from '../components/WordCard/WordCardBar';
 
 
+import Logout from "./Logout";
 
 function App(){
   // TODo:初期値の代入がマジックナンバーなので直す。
@@ -109,6 +109,8 @@ function App(){
             <SearchBox searchWordRef={searchWordRef} action={updateWordCardsOnText} />  
             {another && <WordCardBar action={handleSelectWord} wordCardEntities={wordCards} endpoint={endpoint} setStateAction={setWordCards} />}
             {!another && <WordCardBar action={handleSelectWord} wordCardEntities={wordCards} endpoint={endpoint} setStateAction={setWordCards} />}
+
+            <Logout />
           </nav>
           {/* TODO: ↓ここのDivider(縦線はもっとうまい実装方法があるはず) */}
           <Divider orientation='vertical' sx={{height:'100vh', marginTop:'-10px'}}/>
