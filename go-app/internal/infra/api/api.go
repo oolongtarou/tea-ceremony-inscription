@@ -14,6 +14,7 @@ import (
 	"go-app/pkg/db"
     "go-app/internal/repository"
 	"go-app/internal/entity"
+
 	"gorm.io/gorm"
 
 	"go-app/internal/converter"
@@ -30,13 +31,12 @@ func ListenAndServe(port string) {
 	r := gin.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-    r.Use(sessions.Sessions("mysession", store))
+    r.Use(sessions.Sessions("tea_ins_session", store))
 	// Corsの設定をする
 	r.Use(cors.New(GetCorsConf()))
 
 	conn, err := db.Connect()
 	if err != nil {
-		// TODO:ログを出す。
 		fmt.Println(err.Error())
 		return // DBに繋がらなかったらサーバーを立ち上げても意味がないためリターンする
 	}
@@ -47,76 +47,9 @@ func ListenAndServe(port string) {
 	r.GET("/word-detail", GetWordDetail(conn))
 	r.GET("/word-tags", GetAllWordTags(conn))
     r.GET("/month-word-count", GetAllMonthWordCount(conn))
-	r.POST("/login", func(c *gin.Context){
-		session := sessions.Default(c)
-		
-		user, err := repository.FindUserByMailAddress(c.PostForm("mailAddress"), conn)
-		if err != nil {
-			fmt.Println("メールアドレスをキーにしたユーザー情報の取得に失敗しました", err.Error())
-			c.JSON(http.StatusOK, gin.H{
-				"status": "NG",
-				"loginId": 0,
-			})
-			return 
-		}
+	r.POST("/login", Login(conn))
 
-		if user.UserId <= 0 {
-			fmt.Println("対象のメールアドレスが登録されていません。")
-			c.JSON(http.StatusOK, gin.H{
-				"status": "NG",
-				"loginId": 0,
-			})
-			return 
-		}
-
-		if user.Password != security.ToHashed(c.PostForm("password")) {
-			fmt.Println("パスワードが一致しません。")
-			c.JSON(http.StatusOK, gin.H{
-				"status": "NG",
-				"loginId": 0,
-			})
-			return 
-		}
-
-
-		// mailAddress := c.PostForm("mailAddress")
-		// password := c.PostForm("password")
-		// session.Set("mailAddress", mailAddress)n
-		// session.Set("password", password)
-		session.Set("userId", user.UserId)
-        session.Save()
-
-		// user := entity.User{
-		// 	// UserId: nil,
-		// 	UserName: "yusuke-sato",
-		// 	MailAddress: c.PostForm("mailAddress"),
-		// 	Password: security.ToHashed(c.PostForm("password")),
-		// }
-		// err := repository.CreateUser(user, conn)
-
-	
-		c.JSON(http.StatusOK, gin.H{
-			"status": "OK",
-			"loginId": 0,
-		})
-	})
-
-	r.GET("/logout", func(c *gin.Context){
-     // セッションの破棄
-		session := sessions.Default(c)
-		// fmt.Println("mailAddress:", session.Get("mailAddress"))
-		// fmt.Println("password:", session.Get("password"))
-
-		session.Clear()
-		session.Options(sessions.Options{Path: "/", MaxAge: -1})
-		session.Save()
-
-		c.JSON(http.StatusOK, gin.H{
-			"status": "OK",
-			"loginId": 0,
-			"err": "ログアウト完了",
-		})
-	})
+	r.GET("/logout", Logout(conn))
 	// r.POST("/login", Login(conn))
 
 	r.Run(port)
@@ -270,4 +203,65 @@ func CreateAccount(db *gorm.DB) func(c *gin.Context) {
             })
         }
     }
+}
+
+func Login(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context){
+		session := sessions.Default(c)
+
+		mailAddress := c.PostForm("mailAddress")
+		user, err := repository.FindUserByMailAddress(mailAddress, db)
+
+		if err != nil {
+			fmt.Println("メールアドレスをキーにしたユーザー情報の取得に失敗しました", err.Error())
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "メールアドレスが取得できませんでした。", "", 0},
+			})
+			return 
+		}
+
+		if user.UserId <= 0 {
+			fmt.Println("対象のメールアドレスが登録されていません。")
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "対象のメールアドレスが登録されていません。", "", 0},
+			})
+			return 
+		}
+
+		if user.Password != security.ToHashed(c.PostForm("password")) {
+			fmt.Println("パスワードが一致しません。")
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "", "パスワードが一致しません。", 0},
+			})
+			return 
+		}
+
+		session.Set("userId", user.UserId)
+        session.Save()
+	
+		c.JSON(http.StatusOK, gin.H{
+			"status": 200,
+			"data": entity.LoginResult{true, "", "", 0},
+		})
+	}
+}
+
+func Logout(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context){
+		// セッションの破棄
+		session := sessions.Default(c)
+
+		session.Clear()
+		session.Options(sessions.Options{Path: "/", MaxAge: -1})
+		session.Save()
+
+		c.JSON(http.StatusOK, gin.H{
+			"status": 200,
+			"success": "OK",
+			"loginId": 0,
+		})
+	}
 }
