@@ -48,9 +48,8 @@ func ListenAndServe(port string) {
 	r.GET("/word-tags", GetAllWordTags(conn))
     r.GET("/month-word-count", GetAllMonthWordCount(conn))
 	r.POST("/login", Login(conn))
-
 	r.GET("/logout", Logout(conn))
-	// r.POST("/login", Login(conn))
+	r.POST("/signup", Signup(conn))
 
 	r.Run(port)
 }
@@ -265,3 +264,38 @@ func Logout(db *gorm.DB) func(c *gin.Context) {
 		})
 	}
 }
+
+func Signup(db *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context){
+		mailAddress := c.PostForm("mailAddress")
+		password := security.ToHashed(c.PostForm("password"))
+
+		user, err := repository.FindUserByMailAddress(mailAddress, db)
+
+		if user.UserId > 0 {
+			fmt.Println("このメールアドレスはすでに登録されています。")
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "このメールアドレスはすでに登録されています。", "", 0},
+			})
+			return
+		}
+
+		user = entity.User{MailAddress:mailAddress, Password:password, UserName:"名無し"}
+		err = repository.CreateUser(user, db)
+		if err != nil {
+			fmt.Println("アカウント作成に失敗しました：" + err.Error())
+			c.JSON(http.StatusOK, gin.H{
+				"status": 200,
+				"data": entity.LoginResult{false, "アカウント作成に失敗しました：" + err.Error(), "", 0},
+			})
+			return
+		}
+		fmt.Println("アカウントを作成しました。")
+		c.JSON(http.StatusOK, gin.H{
+			"status": 200,
+			"data": entity.LoginResult{true, "", "", 0},
+		})
+	}
+}
+

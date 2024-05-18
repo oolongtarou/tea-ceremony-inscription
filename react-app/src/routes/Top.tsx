@@ -7,9 +7,6 @@ import Signup from './Signup';
 
 
 function Top() {
-    // const [showPassword, setShowPassword] = React.useState(false);
-    // const handleClickShowPassword = () => setShowPassword((show) => !show);
-
     const loginRef = React.useRef();
     const [showLogin, setShowLogin] = React.useState(true);
 
@@ -21,7 +18,10 @@ function Top() {
         <div className="l-full">
             <div className="c-box l-full__content">
                 <h1>茶の湯の銘 図鑑</h1>
-                {showLogin ? <Login toggleLoginSignup={toggleLoginSignup} /> : <Signup toggleLoginSignup={toggleLoginSignup} />}
+                {showLogin 
+                    ? <Login toggleLoginSignup={toggleLoginSignup} /> 
+                    : <Signup toggleLoginSignup={toggleLoginSignup} />
+                }
             </div>
         </div>
     )
