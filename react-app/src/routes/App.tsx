@@ -11,8 +11,11 @@ import { ToWordCards } from '../utils/Converter';
 import SearchBox from '../components/SearchBox/SearchBox';
 import WordCardBar from '../components/WordCard/WordCardBar';
 
+import { useNavigate } from "react-router-dom";
 
-import Logout from "./Logout";
+import Logout from '../components/atoms/Logout';
+import Header from '../components/organisms/Header';
+
 
 function App(){
   // TODo:初期値の代入がマジックナンバーなので直す。
@@ -20,7 +23,6 @@ function App(){
   const selectedTagRef = useRef<number>(0);
   const searchWordRef = useRef<string>("");
   const [wordCards, setWordCards] = React.useState<WordCardEntity[]>([]);
-
   const [another, setAnother] = React.useState(true);
 
   const [selectedWordId, setSelectedWordId] = React.useState<number | null>(null);
@@ -39,6 +41,11 @@ function App(){
     : `${import.meta.env.VITE_DOMAIN}/words-info`;
 
   React.useEffect(() => {
+    // console.log("cookie:" + cookies.userId)
+    // if (!cookies.userId) {
+    //   navigate("/")
+    // }
+
     inputQueryParam = getQueryParams(selectedMonthRef, selectedTagRef, searchWordRef)
       endpoint = getEndpoint(inputQueryParam);
       axios.get(endpoint).then((response) => {
@@ -100,6 +107,7 @@ function App(){
   return (
       <div className='l-reverse'>
         <nav className='l-reverse__nav'>
+          <Header />
           <MonthBar action={updateWordCardsOnMonth} selectedMonthRef={selectedMonthRef} />
           <Divider sx={{height:'10px'}}/>
         </nav>
@@ -109,8 +117,6 @@ function App(){
             <SearchBox searchWordRef={searchWordRef} action={updateWordCardsOnText} />  
             {another && <WordCardBar action={handleSelectWord} wordCardEntities={wordCards} endpoint={endpoint} setStateAction={setWordCards} />}
             {!another && <WordCardBar action={handleSelectWord} wordCardEntities={wordCards} endpoint={endpoint} setStateAction={setWordCards} />}
-
-            <Logout />
           </nav>
           {/* TODO: ↓ここのDivider(縦線はもっとうまい実装方法があるはず) */}
           <Divider orientation='vertical' sx={{height:'100vh', marginTop:'-10px'}}/>
