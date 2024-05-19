@@ -23,10 +23,14 @@
   position: relative;
   text-align: center;
   height: calc(100vh - 100px);
+  width: 25vw;
+  min-width: 350px;
+  /* max-width: 40vw; */
 }
 .l-reverse__content {
   flex: 3;
   height: auto;
+  width: 75vw;
 }
 
 .c-box {
