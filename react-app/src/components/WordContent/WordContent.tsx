@@ -42,9 +42,11 @@ const WordContent: React.FC<WordContentProps> = props => {
             <div style={{marginTop:'30px'}}/>
             <WordTags tag={wordDetail.tags.join(", ")} inputFontSize='20px' inputImgSize={25} />
             <Divider style={{marginBottom:'30px'}} />
-            {wordDetail.descriptions.map((description , index) => (
-                <WordDescription key={index} {...description} />
-            ))}
+            <div style={{overflow:'auto', height: "calc(100vh - 365px)"}}>
+              {wordDetail.descriptions.map((description , index) => (
+                  <WordDescription key={index} {...description} />
+              ))}
+            </div>
         </Container>
     )
 }
