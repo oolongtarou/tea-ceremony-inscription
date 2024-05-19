@@ -1,1 +1,5 @@
 .env.local
+.firebaserc
+react-app/build/
+react-app/.firebase/*
+react-app/build/index.html
