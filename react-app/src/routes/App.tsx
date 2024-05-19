@@ -120,7 +120,7 @@ function App(){
           </nav>
           {/* TODO: ↓ここのDivider(縦線はもっとうまい実装方法があるはず) */}
           <Divider orientation='vertical' sx={{height:'100vh', marginTop:'-10px'}}/>
-          <div className='c-box l-reverse__content'>
+          <div className='l-reverse__content' style={{paddingTop:"5vh"}}>
             <WordContent selectedWordId={selectedWordId || 0}/>
           </div>
         </div>
