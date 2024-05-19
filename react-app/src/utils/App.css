@@ -12,12 +12,11 @@
 .l-reverse__nav {
   position: relative;
   padding: 10px 0;
-  height: 59px;
+  height: 95px;
 }
 .l-reverse__body {
   display: flex;
   height: calc(100vh - 100px);
-  /* height: calc(100vh - 20px); */
 }
 .l-reverse__localNav {
   flex: 0.5;
@@ -35,5 +34,6 @@
 }
 
 .word-card-bar{
-  height: calc(100vh - 215px - 100px)
+  height: calc(100vh - 215px - 35px) /* 100vh - (タグバーのheight + 検索テキストボックスのheight) - ヘッダーのheight */
+  /* height: calc(100vh - 215px - 100px) */
 }

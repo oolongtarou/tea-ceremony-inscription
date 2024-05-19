@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import axios from 'axios';
 import PasswordTextField from "../components/atoms/PasswordTextField";
 import MailAddressTextField from "../components/atoms/MailAddressTextField";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 interface IFormInput {
   mailAddress: string
