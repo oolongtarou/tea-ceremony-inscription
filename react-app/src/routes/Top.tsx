@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { useRef } from 'react';
 
-
-import Login from './Login';
-import Signup from './Signup';
-
+import Login from '../components/organisms/Login';
+import Signup from '../components/organisms/Signup';
 
 function Top() {
     const loginRef = React.useRef();

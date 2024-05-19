@@ -1,4 +1,4 @@
-import Logout from '../../routes/Logout';
+import Logout from '../atoms/Logout';
 import TryIcon from '@mui/icons-material/Try';
 import StarIcon from '@mui/icons-material/Star';
 import { useCookies ,CookiesProvider } from 'react-cookie';

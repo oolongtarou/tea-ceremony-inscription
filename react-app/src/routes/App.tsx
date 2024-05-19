@@ -13,7 +13,7 @@ import WordCardBar from '../components/WordCard/WordCardBar';
 
 import { useNavigate } from "react-router-dom";
 
-import Logout from "./Logout";
+import Logout from '../components/atoms/Logout';
 import Header from '../components/organisms/Header';
 
 
